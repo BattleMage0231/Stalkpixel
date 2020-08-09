@@ -5,8 +5,7 @@ Full credit for this template goes to othneildrew and contributors.
 
 <br />
 <p align="center">
-  <h3 align="center">Stalkpixel</h3>
-
+  <h1 align="center">Stalkpixel</h3>
   <p align="center">
     A lightweight NodeJS application to stalk Hypixel players
     <br />
@@ -34,8 +33,9 @@ Full credit for this template goes to othneildrew and contributors.
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![product-screenshot](assets/Capture.PNG)
 
+Stalkpixel is a lightweight NodeJS application that can determine whether and where a player is on the Hypixel Network. It can be used to stalk YouTubers, staff members, or your friends.
 
 <!-- GETTING STARTED -->
 ## Getting Started
