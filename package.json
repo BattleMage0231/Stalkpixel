@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "BattleMage_",
+  "author": "Leyang Zou",
   "license": "MIT",
   "dependencies": {
     "yargs": "^15.4.1"
