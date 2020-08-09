@@ -22,14 +22,35 @@ function fetch(link) {
     });
 }
 
+// wait for ms seconds
+function pause(ms) {
+    return new Promise((resolve, reject) => setTimeout(resolve, ms));
+}
+
 // fetch Minecraft's UUID from a player name
 async function fetchUUID(name) {
-    return JSON.parse(await fetch(MOJANG_ENDPOINT + name))['id'];
+    res = JSON.parse(await fetch(MOJANG_ENDPOINT + name));
+    if(res.error && res.error == 'TooManyRequestsException') {
+        console.log('Exceeded Mojang\'s API rate limit, retrying every 10 seconds\n');
+    }
+    while(res.error && res.error == 'TooManyRequestsException') {
+        await pause(10000);
+        res = JSON.parse(await fetch(MOJANG_ENDPOINT + name));
+    }
+    return res['id'];
 }
 
 // get player's Hypixel status from UUID
 async function fetchStatus(uuid, key) {
-    return JSON.parse(await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`));
+    res = JSON.parse(await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`));
+    if(res.throttle) {
+        console.log('Exceeded Hypixel\'s API rate limit, retrying every 10 seconds\n');
+    }
+    while(res.throttle) {
+        await pause(10000);
+        res = JSON.parse(await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`));
+    }
+    return res;
 }
 
 exports.MOJANG_ENDPOINT = MOJANG_ENDPOINT;

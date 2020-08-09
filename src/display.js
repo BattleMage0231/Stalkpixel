@@ -57,7 +57,7 @@ function displayOnlineStatus(name, session) {
 // displays status of one player
 function displayStatus(name, status) {
     if(status == null || !status['success']) {
-        console.log(Colors.inColor(`There was an exception when checking ${name}'s status\n`, Colors.RED));
+        console.log(Colors.inColor(`An exception occured when checking ${name}'s status\n`, Colors.RED));
         return;
     }
     session = status['session'];

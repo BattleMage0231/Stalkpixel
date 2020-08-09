@@ -1,14 +1,14 @@
 {
-  "name": "stalker",
+  "name": "stalkpixel",
   "version": "1.0.0",
-  "description": "",
+  "description": "A lightweight NodeJS application to stalk Hypixel players",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "BattleMage_",
+  "license": "MIT",
   "dependencies": {
-    "yarl": "^3.0.0"
+    "yargs": "^15.4.1"
   }
 }

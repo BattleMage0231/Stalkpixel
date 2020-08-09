@@ -1,4 +1,7 @@
-const fs = require('fs');
+// terminal configuration
+const args = require('./config.js');
+const config = args.config;
+const targets = args.targets;
 
 // api requests
 const requests = require('./requests.js');
@@ -6,17 +9,13 @@ const requests = require('./requests.js');
 // displaying statuses
 const display = require('./display.js');
 
-// file directory
-const DIR = __dirname
-
-// load files
-const SECRETS = JSON.parse(fs.readFileSync(DIR + '/../secrets.json'));
-const TARGETS = JSON.parse(fs.readFileSync(DIR + '/../targets.json'))['targets'];
-
 // fetch all statuses in array of names
 async function fetchAll(targets) {
     for(target of targets) {
-        let status = await requests.fetchStatus(await requests.fetchUUID(target), SECRETS['apikey']);
+        let status;
+        try {
+            status = await requests.fetchStatus(await requests.fetchUUID(target), config['apikey']);
+        } catch(err) {}
         display.displayStatus(target, status);
     }
 }
@@ -24,7 +23,7 @@ async function fetchAll(targets) {
 // executes the program
 function run() {
     display.displayStartMessage();
-    fetchAll(TARGETS).then(display.displayFinishMessage);
+    fetchAll(targets).then(display.displayFinishMessage);
 }
 
 run();
