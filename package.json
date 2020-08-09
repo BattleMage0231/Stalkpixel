@@ -1,0 +1,14 @@
+{
+  "name": "stalker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "yarl": "^3.0.0"
+  }
+}
