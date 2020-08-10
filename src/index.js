@@ -11,6 +11,8 @@ const display = require('./display.js');
 
 // fetch all statuses in array of names
 async function fetchAll(targets) {
+    requests.setConfig(config);
+    display.setConfig(config);
     for(target of targets) {
         let status;
         try {
@@ -22,8 +24,14 @@ async function fetchAll(targets) {
 
 // executes the program
 function run() {
-    display.displayStartMessage();
-    fetchAll(targets).then(display.displayFinishMessage);
+    if(config['msg']) {
+        display.displayStartMessage();
+    }
+    fetchAll(targets).then(() => {
+        if(config['msg']) {
+            display.displayFinishMessage();
+        }
+    });
 }
 
 run();

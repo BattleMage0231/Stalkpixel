@@ -21,10 +21,26 @@ const parsed = yargs
     .alias('json', 'j')
     // alternate way to add api key
     .option('key', {
-        describe: 'Your API key',
+        describe: 'Externally provides an API key',
     })
     .string('key')
     .alias('key', 'k')
+    // print online only
+    .option('online-only', {
+        describe: 'Only displays statuses of players that are online',
+    })
+    .boolean('online-only')
+    .alias('online-only', 'o')
+    // print without start and end msg
+    .option('no-msg', {
+        describe: 'Do not print the start and finishing messages',
+    })
+    .boolean('no-msg')
+    // do not print JSON dumps
+    .option('no-dump', {
+        describe: 'Do not print JSON dumps for online players',
+    })
+    .boolean('no-dump')
     // misc
     .alias('version', 'v')
     .help()
@@ -53,6 +69,10 @@ if(parsed['key']) {
 } else {
     config['apikey'] = JSON.parse(fs.readFileSync(`${DIR}/../secrets.json`))['apikey'];
 }
+
+config['online-only'] = (parsed['online-only'] === true);
+config['msg'] = (parsed['msg'] === undefined);
+config['dump'] = (parsed['dump'] === undefined);
 
 exports.config = config;
 exports.targets = targets;

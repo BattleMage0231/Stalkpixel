@@ -5,6 +5,12 @@ const https = require('https');
 const MOJANG_ENDPOINT = 'https://api.mojang.com/users/profiles/minecraft/';
 const HYPIXEL_ENDPOINT = 'https://api.hypixel.net/status?';
 
+let config;
+
+function setConfig(obj) {
+    config = obj;
+}
+
 // returns a promise of GET data from a link
 function fetch(link) {
     return new Promise((resolve, reject) => {
@@ -31,7 +37,9 @@ function pause(ms) {
 async function fetchUUID(name) {
     res = JSON.parse(await fetch(MOJANG_ENDPOINT + name));
     if(res.error && res.error == 'TooManyRequestsException') {
-        console.log('Exceeded Mojang\'s API rate limit, retrying every 10 seconds\n');
+        if(!config['online-only']) {
+            console.log('Exceeded Mojang\'s API rate limit, retrying every 10 seconds\n');
+        }
     }
     while(res.error && res.error == 'TooManyRequestsException') {
         await pause(10000);
@@ -44,7 +52,9 @@ async function fetchUUID(name) {
 async function fetchStatus(uuid, key) {
     res = JSON.parse(await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`));
     if(res.throttle) {
-        console.log('Exceeded Hypixel\'s API rate limit, retrying every 10 seconds\n');
+        if(!config['online-only']) {
+            console.log('Exceeded Hypixel\'s API rate limit, retrying every 10 seconds\n');
+        }
     }
     while(res.throttle) {
         await pause(10000);
@@ -59,3 +69,5 @@ exports.HYPIXEL_ENDPOINT = HYPIXEL_ENDPOINT;
 exports.fetch = fetch;
 exports.fetchUUID = fetchUUID;
 exports.fetchStatus = fetchStatus;
+
+exports.setConfig = setConfig;

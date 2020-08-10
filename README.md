@@ -105,6 +105,6 @@ The --key flag is an alternative method of providing your API key. It overrides 
 
 ## Contributing
 
-This project is not fully mature and is in need of many more features. As such, contributions in the form of PRs would be greatly appreciated. Specifically, following are things that need to be added or improved:
-1. Parsing identifiers returned by the Hypixel API as readible names
+This project is not fully mature and is in need of many more features. As such, contributions in the form of PRs would be greatly appreciated. The following are things that need to be added or improved:
+1. Parsing identifiers returned by the Hypixel API as readible names (Skyblock specifically)
 2. Adding more command line arguments
