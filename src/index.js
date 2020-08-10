@@ -5,14 +5,14 @@ const targets = args.targets;
 
 // api requests
 const requests = require('./requests.js');
+requests.setConfig(config);
 
 // displaying statuses
 const display = require('./display.js');
+display.setConfig(config);
 
 // fetch all statuses in array of names
 async function fetchAll(targets) {
-    requests.setConfig(config);
-    display.setConfig(config);
     for(target of targets) {
         let status;
         try {
