@@ -1,20 +1,21 @@
 // convert identifiers to readable statuses and displays them
 
+// get directory contents
+const fs = require('fs');
+
+// script directory
+const DIR = __dirname;
+
 // formatting
 const format = require('./format.js');
 const Colors = format.Colors;
 const Messages = format.Messages;
 const PAD = format.PAD;
 
-let config = new Object();
+// online status formatting
+const games = require('./games');
 
-const nameOf = {
-    'SKYWARS': 'SkyWars',
-    'BEDWARS': 'Bed Wars',
-    'HOUSING': 'Housing',
-    'SKYBLOCK': 'SkyBlock',
-    'LEGACY': 'Classic Games',
-};  
+let config;
 
 function setConfig(obj) {
     config = obj;
@@ -28,37 +29,6 @@ function displayStartMessage() {
 // displays the finishing message
 function displayFinishMessage() {
     console.log(Messages.FINISHED_MSG);
-}
-
-function getGameName(id) {
-    let name = nameOf[id];
-    return name == undefined ? id : name;
-}
-
-// displays status of one player given that they are online
-function displayOnlineStatus(name, session) {
-    let game = getGameName(session['gameType']); // get proper name of game
-    // get other properties if they exist
-    let mode = session['mode'];
-    let map = session['map'];
-    // player is in the main lobby
-    if(game == 'MAIN') {
-        console.log(`${PAD}In a Main Lobby`);
-        return;
-    }
-    // player is in the lobby
-    if(mode && mode == 'LOBBY') {
-        console.log(`${PAD}In a ${game} Lobby`);
-        return;
-    }
-    // regular online messages
-    console.log(`${PAD}Playing ${game}`);
-    if(mode) {
-        console.log(`${PAD}In mode ${mode}`);
-    }
-    if(map) {
-        console.log(`${PAD}On map ${map}`);
-    }
 }
 
 // displays status of one player
@@ -77,7 +47,9 @@ function displayStatus(name, status) {
         return;
     }
     console.log(`${name} is ${Messages.ONLINE}`);
-    displayOnlineStatus(name, session);
+    for(line of games.getFormattedStatus(session)) {
+        console.log(`${PAD}${line}`);
+    }
     if(config['dump']) {
         console.log(`${PAD}JSON dump: ${JSON.stringify(session)}`);
     }
