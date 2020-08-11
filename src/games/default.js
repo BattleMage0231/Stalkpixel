@@ -1,5 +1,5 @@
 function getFormattedStatus(session) {
-    status = []; // array of lines
+    let status = []; // array of lines
     let game = session['gameType'];
     let mode = session['mode'];
     let map = session['map'];

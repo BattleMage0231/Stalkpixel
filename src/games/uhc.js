@@ -1,22 +1,17 @@
-const GAME = 'Bed Wars';
-const GAME_ID = 'BEDWARS';
+const GAME = 'UHC Champions';
+const GAME_ID = 'UHC';
 
-// get mode from id
-// modes are in the form ${NUMTEAMS}_${NUMPERTEAM}
+// note that speed UHC is different from UHC
+
 const MODE_FROM_ID = {
-    'EIGHT_ONE': 'Solo',
-    'EIGHT_TWO': 'Doubles',
-    'FOUR_THREE': '3v3v3v3',
-    'FOUR_FOUR': '4v4v4v4',
-    'TWO_FOUR': '4v4',
-    'EIGHT_TWO_VOIDLESS': 'Voidless Doubles',
-    'FOUR_FOUR_VOIDLESS': 'Voidless 4v4v4v4',
+    'BRAWL_DUO': 'Duo Brawl',
+    'SOLO': 'Solo',
+    'TEAMS': 'Teams',
 };
 
 function getFormattedStatus(session) {
     let status = [];
     let mode = session['mode'];
-    let map = session['map'];
     if(mode == 'LOBBY') {
         status.push(`In a ${GAME} lobby`);
         return status;
@@ -27,7 +22,6 @@ function getFormattedStatus(session) {
     } else {
         status.push(`In mode ${mode}`);
     }
-    status.push(`On map ${map}`);
     return status;
 }
 

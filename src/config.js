@@ -1,5 +1,7 @@
 // read write files
 const fs = require('fs');
+// cross-platform paths
+const path = require('path');
 
 // dependency to parse terminal arguments
 const yargs = require('yargs');
@@ -61,13 +63,13 @@ if(parsed['stalk'] !== undefined) {
         } catch(err) {}
     }
 } else {
-    targets.push(...(JSON.parse(fs.readFileSync(`${DIR}/../targets.json`))['targets']))
+    targets.push(...(JSON.parse(fs.readFileSync(path.join(DIR, '..', 'targets.json')))['targets']))
 }
 
 if(parsed['key']) {
     config['apikey'] = parsed['key'];
 } else {
-    config['apikey'] = JSON.parse(fs.readFileSync(`${DIR}/../secrets.json`))['apikey'];
+    config['apikey'] = JSON.parse(fs.readFileSync(path.join(DIR, '..', 'secrets.json')))['apikey'];
 }
 
 config['online-only'] = (parsed['online-only'] === true);

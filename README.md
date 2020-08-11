@@ -35,7 +35,7 @@ Full credit for this template goes to othneildrew and contributors.
 
 ![product-screenshot](assets/Capture.PNG)
 
-Stalkpixel is a lightweight NodeJS application that can determine whether and where a player is on the Hypixel Network. It can be used to stalk YouTubers, staff members, or your friends.
+Stalkpixel is a lightweight NodeJS application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Stalkpixel can be used to stalk YouTubers, staff members, or your friends.
 
 <!-- GETTING STARTED -->
 ## Getting Started

@@ -1,16 +1,11 @@
-const GAME = 'Bed Wars';
-const GAME_ID = 'BEDWARS';
+const GAME = 'Speed UHC';
+const GAME_ID = 'SPEED_UHC';
 
-// get mode from id
-// modes are in the form ${NUMTEAMS}_${NUMPERTEAM}
+// note that speed UHC is different from UHC
+
 const MODE_FROM_ID = {
-    'EIGHT_ONE': 'Solo',
-    'EIGHT_TWO': 'Doubles',
-    'FOUR_THREE': '3v3v3v3',
-    'FOUR_FOUR': '4v4v4v4',
-    'TWO_FOUR': '4v4',
-    'EIGHT_TWO_VOIDLESS': 'Voidless Doubles',
-    'FOUR_FOUR_VOIDLESS': 'Voidless 4v4v4v4',
+    'solo_normal': 'Solo Normal',
+    'teams_normal': 'Teams Normal',
 };
 
 function getFormattedStatus(session) {

@@ -23,7 +23,7 @@ async function fetchAll(targets) {
 }
 
 // executes the program
-function run() {
+function run(config, targets) {
     if(config['msg']) {
         display.displayStartMessage();
     }
@@ -34,4 +34,6 @@ function run() {
     });
 }
 
-run();
+if(require.main === module) {
+    run(config, targets);
+}

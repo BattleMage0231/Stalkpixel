@@ -14,7 +14,7 @@ const MODE_FROM_ID = {
 };
 
 function getFormattedStatus(session) {
-    status = []; // array of lines
+    let status = []; // array of lines
     let mode = session['mode'];
     let map = session['map'];
     // in a skywars lobby

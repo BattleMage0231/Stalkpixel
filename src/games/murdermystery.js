@@ -1,16 +1,12 @@
-const GAME = 'Bed Wars';
-const GAME_ID = 'BEDWARS';
+const GAME = 'Murder Mystery';
+const GAME_ID = 'MURDER_MYSTERY';
 
-// get mode from id
-// modes are in the form ${NUMTEAMS}_${NUMPERTEAM}
+// modes are in the form MURDER_${mode}
 const MODE_FROM_ID = {
-    'EIGHT_ONE': 'Solo',
-    'EIGHT_TWO': 'Doubles',
-    'FOUR_THREE': '3v3v3v3',
-    'FOUR_FOUR': '4v4v4v4',
-    'TWO_FOUR': '4v4',
-    'EIGHT_TWO_VOIDLESS': 'Voidless Doubles',
-    'FOUR_FOUR_VOIDLESS': 'Voidless 4v4v4v4',
+    'MURDER_ASSASSINS': 'Assasins',
+    'MURDER_CLASSIC': 'Classic',
+    'MURDER_DOUBLE_UP': 'Double Up!',
+    'MURDER_INFECTION': 'Infection',
 };
 
 function getFormattedStatus(session) {

@@ -1,12 +1,14 @@
 // main file in game module
 
+const path = require('path'); // cross-platform paths
+
 const DIR = __dirname;
 
 let GAME_FROM_ID = new Map();
 
 require('fs').readdirSync(`${DIR}`).forEach((file) => {
     if(file != 'index.js') {
-        const obj = require(`${DIR}/${file}`);
+        const obj = require(path.join(DIR, file));
         GAME_FROM_ID[obj.GAME_ID] = obj;
     }
 });

@@ -1,16 +1,11 @@
-const GAME = 'Bed Wars';
-const GAME_ID = 'BEDWARS';
+const GAME = 'Build Battle';
+const GAME_ID = 'BUILD_BATTLE';
 
-// get mode from id
-// modes are in the form ${NUMTEAMS}_${NUMPERTEAM}
 const MODE_FROM_ID = {
-    'EIGHT_ONE': 'Solo',
-    'EIGHT_TWO': 'Doubles',
-    'FOUR_THREE': '3v3v3v3',
-    'FOUR_FOUR': '4v4v4v4',
-    'TWO_FOUR': '4v4',
-    'EIGHT_TWO_VOIDLESS': 'Voidless Doubles',
-    'FOUR_FOUR_VOIDLESS': 'Voidless 4v4v4v4',
+    'SOLO_PRO': 'Pro',
+    'SOLO_NORMAL': 'Solo',
+    'TEAMS_NORMAL': 'Teams',
+    'GUESS_THE_BUILD': 'Guess The Build',
 };
 
 function getFormattedStatus(session) {
@@ -27,7 +22,6 @@ function getFormattedStatus(session) {
     } else {
         status.push(`In mode ${mode}`);
     }
-    status.push(`On map ${map}`);
     return status;
 }
 
