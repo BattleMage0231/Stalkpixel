@@ -1,5 +1,3 @@
-// convert identifiers to readable statuses and displays them
-
 // get directory contents
 const fs = require('fs');
 const path = require('path');
@@ -12,7 +10,7 @@ const format = require('./format.js');
 const PAD = format.PAD;
 
 // online status formatting
-let modes = new Object();
+let gameData = new Object();
 
 function loadGameData() {
     // recursively load a JSON object describing the modes of a game
@@ -48,7 +46,7 @@ function loadGameData() {
             });
             // lobby constant
         }
-        modes[key] = value;
+        gameData[key] = value;
     });
 };
 
@@ -90,12 +88,14 @@ function displayStatus(name, status) {
     let gameType = session['gameType'];
     let mode = session['mode'];
     let map = session['map'];
-    if(gameType in modes) {
-        if(mode in modes[gameType]['modes']) {
-            mode = modes[gameType]['modes'][mode];
+    // parse game data
+    if(gameType in gameData) {
+        if(mode in gameData[gameType]['modes']) {
+            mode = gameData[gameType]['modes'][mode];
         }
-        gameType = modes[gameType]['name'];
+        gameType = gameData[gameType]['name'];
     }
+    // special messages
     if(gameType == 'Limbo') {
         console.log(`${PAD}In ${gameType}`);
     } else if(['Main Lobby', 'Tournament Hall', 'Replay Viewer'].includes(gameType)) {
@@ -122,6 +122,7 @@ function displayStatus(name, status) {
     if(map) {
         console.log(`${PAD}On map ${map}`);
     }
+    // JSON dump
     if(config['dump']) {
         console.log(`${PAD}JSON dump: ${JSON.stringify(session)}`);
     }

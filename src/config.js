@@ -1,6 +1,5 @@
 // read write files
 const fs = require('fs');
-// cross-platform paths
 const path = require('path');
 
 // dependency to parse terminal arguments
@@ -88,6 +87,7 @@ const parsed = yargs
 let config = new Object();
 let targets = [];
 
+// config file
 let configJSON = require('./../config/config.json');
 
 // set config properties are not a part of the main program
@@ -108,6 +108,7 @@ if(['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => pars
     process.exit(0);
 }
 
+// targets from --stalk, --json, or default
 if(parsed['stalk'] !== undefined) {
     targets = parsed['stalk'];
 } else if(parsed['json'] !== undefined) {
@@ -121,22 +122,31 @@ if(parsed['stalk'] !== undefined) {
     targets.push(...(configJSON['targets']));
 }
 
+// location of api key
 if(parsed['key']) {
     config['apikey'] = parsed['key'];
 } else {
     config['apikey'] = configJSON['apikey'];
 }
 
+// players being uncached
 config['uncache'] = [];
 if(parsed['uncache']) {
     config['uncache'] = parsed['uncache'];
 }
 
+// boolean arguments
 config['follow'] = parsed['follow'];
-config['online-only'] = (parsed['online-only'] === true);
-config['msg'] = (parsed['msg'] === undefined);
-config['dump'] = (parsed['dump'] === undefined);
-config['cache'] = (parsed['cache'] === true);
+config['online-only'] = parsed['online-only'];
+config['msg'] = parsed['msg'];
+if(parsed['msg'] === undefined) {
+    config['msg'] = true;
+}
+config['dump'] = parsed['dump'];
+if(parsed['dump'] === undefined) {
+    config['dump'] = true;
+}
+config['cache'] = parsed['cache'];
 
 exports.config = config;
 exports.targets = targets;

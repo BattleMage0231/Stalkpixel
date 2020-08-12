@@ -47,6 +47,7 @@ function run(config, targets) {
         display.displayStartMessage();
     }
     new Promise((resolve, reject) => {
+        // follow mode vs normal mode
         if(config['follow']) {
             console.log('Started following player. Press CTRL-C to exit.\n');
             fetchAll([config['follow']]);
@@ -57,16 +58,16 @@ function run(config, targets) {
             fetchAll(targets).then(resolve);
         }
     }).then(() => {
+        // if exited without error
         if(config['msg']) {
             display.displayFinishMessage();
         }
     }).finally(() => {
+        // write to cache with or without error
         if(config['cache'] || config['uncache']) {
             fs.writeFileSync(path.join(DIR, 'data', 'cache.json'), JSON.stringify(cache));
         }
     });
 }
 
-if(require.main === module) {
-    run(config, targets);
-}
+run(config, targets);
