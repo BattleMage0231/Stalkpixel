@@ -53,6 +53,26 @@ const parsed = yargs
         describe: 'Uncaches the following list of names',
     })
     .array('uncache')
+    // set api key
+    .option('setapikey', {
+        describe: 'Sets or updates your API key to the next argument',
+    })
+    .string('setapikey')
+    // set targets
+    .option('settargets', {
+        describe: 'Sets the targets list to the following list',
+    })
+    .array('settargets')
+    // clear targets
+    .option('cleartargets', {
+        describe: 'Clear the targets list'
+    })
+    .boolean('cleartargets')
+    // add targets
+    .option('addtargets', {
+        describe: 'Adds targets to the list',
+    })
+    .array('addtargets')
     // misc
     .alias('version', 'v')
     .help()
@@ -62,22 +82,43 @@ const parsed = yargs
 let config = new Object();
 let targets = [];
 
+let configJSON = require('./../config/config.json');
+
+// set config properties are not a part of the main program
+if(['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => parsed.hasOwnProperty(prop))) {
+    if(parsed.hasOwnProperty('setapikey')) {
+        configJSON['apikey'] = parsed['setapikey'];
+    }
+    if(parsed.hasOwnProperty('cleartargets')) {
+        configJSON['targets'] = [];
+    }
+    if(parsed.hasOwnProperty('settargets')) {
+        configJSON['targets'] = parsed['settargets'];
+    }
+    if(parsed.hasOwnProperty('addtargets')) {
+        configJSON['targets'].push(...parsed['addtargets']);
+    }
+    fs.writeFileSync(path.join(DIR, '..', 'config', 'config.json'), JSON.stringify(configJSON, null, 4));
+    process.exit(0);
+}
+
 if(parsed['stalk'] !== undefined) {
     targets = parsed['stalk'];
 } else if(parsed['json'] !== undefined) {
     for(let file of parsed['json']) {
         try {
-            targets.push(...(require(file)['targets']));
+            let target = JSON.parse(fs.readFileSync(file));
+            targets.push(...(target['targets']));
         } catch(err) {}
     }
 } else {
-    targets.push(...(require('./../config/targets.json')['targets']));
+    targets.push(...(configJSON['targets']));
 }
 
 if(parsed['key']) {
     config['apikey'] = parsed['key'];
 } else {
-    config['apikey'] = require('./../config/secrets.json')['apikey'];
+    config['apikey'] = configJSON['apikey'];
 }
 
 config['uncache'] = [];

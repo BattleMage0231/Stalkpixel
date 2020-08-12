@@ -40,7 +40,7 @@ Stalkpixel is a lightweight Node.js CLI application that can determine whether a
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This guide assumes that you have some experience with the terminal. Follow these simple steps to download and install Stalkpixel.
+This guide assumes that you have some experience with the terminal.
 
 ### Prerequisites
 
@@ -48,17 +48,16 @@ To use this application, you must have npm and Node.js installed.
 
 ### Installation
  
-1. Clone or download the repository
+Run the following command to install Stalkpixel.
+```sh
+npm install -g stalkpixel
+```
+You can also clone or download this repository, and then install dependencies manually.
 ```sh
 git clone https://github.com/BattleMage0231/Stalkpixel.git
-```
-2. Navigate into the main directory
-```sh
 cd stalkpixel
-```
-3. Install NPM packages
-```sh
 npm install
+node . --stalk BattleMage_ # to run
 ```
 
 
@@ -66,40 +65,38 @@ npm install
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Before you use the application, you must first edit the apikey property in config/secrets.json to include your API key. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key.
-```json
-{
-    "apikey": "<YOUR_KEY_HERE>"
-}
-```
-
-To run the application, navigate into the main directory and run
+Before you use the application, you must first run the following command to set your API key. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key.
 ```sh
-node .
+stalkpixel --setapikey <YOUR_KEY_HERE>
 ```
 
-By default, the application calls the APIs with all players specified in config/targets.json. To call it with a different list of players, you can change that list or see instructions below.
+To run the application, run
+```sh
+stalkpixel
+```
+
+By default, the application calls the APIs with all players specified in stalkpixel/config/config.json. To call it with a different list of players, you can change that list using terminal flags specified in the documentation or see instructions below.
 
 ### Specify a List of Players
 ```sh
-node . --stalk PLAYER1 PLAYER2 PLAYER3 PLAYER4
+stalkpixel --stalk PLAYER1 PLAYER2 PLAYER3 PLAYER4
 ```
 
-The --stalk flag tells the application to call the APIs with the specified list of players rather than with those found in config/targets.json.
+The --stalk flag tells the application to call the APIs with the specified list of players rather than with those found in config.json.
 
 ### Specify JSON Files
 ```sh
-node . --json file1.json dir1/file2.json
+stalkpixel --json file1.json dir1/file2.json
 ```
 
-The --json flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as config/targets.json to be valid.
+The --json flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as config.json to be valid.
 
 ### API Key as Argument
 ```sh
-node . --key API_KEY
+stalkpixel --key API_KEY
 ```
 
-The --key flag is an alternative method of providing your API key. It overrides the key found in config/secrets.json.
+The --key flag is an alternative method of providing your API key. It overrides the key found in config.json.
 
 
 <!-- ACKNOWLEDGEMENTS -->
