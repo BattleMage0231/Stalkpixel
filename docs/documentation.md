@@ -163,7 +163,7 @@ stalkpixel --addtargets PLAYER1 PLAYER2
 
 The --addtargets flag appends the following list of players to the default stalk list.
 
-### Continuously Follow a Player
+## Continuously Follow a Player
 ```sh
 stalkpixel --follow PLAYER1
 ```
