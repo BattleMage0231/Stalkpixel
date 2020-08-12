@@ -9,8 +9,6 @@ const DIR = __dirname;
 
 // formatting
 const format = require('./format.js');
-const Colors = format.Colors;
-const Messages = format.Messages;
 const PAD = format.PAD;
 
 // online status formatting
@@ -41,6 +39,7 @@ function loadGameData() {
         value['name'] = game['name']; 
         // mode data is stored at modes[GAME]['modes']
         value['modes'] = new Object();
+        value['modes']['LOBBY'] = 'Lobby';
         // if game contains modes
         if(game['modes']) {
             // set mode of every mode object
@@ -48,7 +47,6 @@ function loadGameData() {
                 setMode(obj, value);
             });
             // lobby constant
-            value['modes']['LOBBY'] = 'Lobby';
         }
         modes[key] = value;
     });
@@ -64,30 +62,30 @@ function setConfig(obj) {
 
 // display the starting message
 function displayStartMessage() {
-    console.log(`${Messages.WARNING_MSG}\n`);
+    console.log(`${format.WARNING_MSG}\n`);
 }
 
 // displays the finishing message
 function displayFinishMessage() {
-    console.log(Messages.FINISHED_MSG);
+    console.log(format.FINISHED_MSG);
 }
 
 // displays status of one player
 function displayStatus(name, status) {
     if(status == null || !status['success']) {
         if(!config['online-only']) {
-            console.log(Colors.inColor(`An exception occured when checking ${name}'s status\n`, Colors.RED));
+            console.log(format.inColor(`An exception occured when checking ${name}'s status\n`, format.RED));
         }
         return;
     }
     session = status['session'];
     if(!session['online']) {
         if(!config['online-only']) {
-            console.log(`${name} is ${Messages.NOT_ONLINE}\n`);
+            console.log(`${name} is ${format.NOT_ONLINE}\n`);
         }
         return;
     }
-    console.log(`${name} is ${Messages.ONLINE}`);
+    console.log(`${name} is ${format.ONLINE}`);
     // get game, mode, and map data
     let gameType = session['gameType'];
     let mode = session['mode'];

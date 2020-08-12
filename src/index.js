@@ -1,4 +1,5 @@
-// terminal configuration
+#!/usr/bin/env node
+
 const args = require('./config.js');
 const config = args.config;
 const targets = args.targets;

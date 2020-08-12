@@ -1,30 +1,33 @@
 // formatting related classes and constants
 
-class Colors {
-    static RED = '\033[91m';
-    static GREEN = '\033[92m';
-    static YELLOW = '\033[93m';
-    static END = '\033[0m';
+const RED = '\033[91m';
+const GREEN = '\033[92m';
+const YELLOW = '\033[93m';
+const END = '\033[0m';
 
-    static inColor(text, color) {
-        return color + text + Colors.END;
-    }
+function inColor(text, color) {
+    return color + text + END;
 }
 
-class Messages {
-    // colored messages
-    static NOT_ONLINE = Colors.inColor('Not Online', Colors.RED);
-    static ONLINE = Colors.inColor('Online', Colors.GREEN);
-    static WARNING_MSG = Colors.inColor(
-        'This API function can be disabled in game, so some offline players may actually be online', 
-        Colors.YELLOW
-    );
-    static FINISHED_MSG = Colors.inColor('Finished fetching statuses', Colors.YELLOW);
-}
+const NOT_ONLINE = inColor('Not Online', RED);
+const ONLINE = inColor('Online', GREEN);
+const WARNING_MSG = inColor(
+    'This API function can be disabled in game, so some offline players may actually be online', 
+    YELLOW
+);
+const FINISHED_MSG = inColor('Finished fetching statuses', YELLOW);
 
 const PAD = '  ';
 
-exports.Colors = Colors;
-exports.Messages = Messages;
+exports.RED = RED;
+exports.GREEN = GREEN;
+exports.YELLOW = YELLOW;
+exports.END = END;
+exports.inColor = inColor;
+
+exports.NOT_ONLINE = NOT_ONLINE;
+exports.ONLINE = ONLINE;
+exports.WARNING_MSG = WARNING_MSG;
+exports.FINISHED_MSG = FINISHED_MSG;
 
 exports.PAD = PAD;
