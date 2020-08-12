@@ -53,14 +53,14 @@ The --stalk or -s flag tells the application to call the APIs with the specified
 node . --json file1.json dir1/file2.json
 ```
 
-The --json or -j flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as targets.json to be valid.
+The --json or -j flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as config/targets.json to be valid.
 
 ## API Key as Argument
 ```sh
 node . --key API_KEY
 ```
 
-The --key or -k flag is an alternative method of providing your API key. It overrides the key found in secrets.json.
+The --key or -k flag is an alternative method of providing your API key. It overrides the key found in config/secrets.json.
 
 ## Only Display Online Players
 ```sh

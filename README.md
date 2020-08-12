@@ -7,7 +7,7 @@ Full credit for this template goes to othneildrew and contributors.
 <p align="center">
   <h1 align="center">Stalkpixel</h3>
   <p align="center">
-    A lightweight NodeJS application to stalk Hypixel players
+    A lightweight Node.js application to stalk Hypixel players
     <br />
   </p>
 </p>
@@ -35,16 +35,16 @@ Full credit for this template goes to othneildrew and contributors.
 
 ![product-screenshot](assets/Capture.PNG)
 
-Stalkpixel is a lightweight NodeJS application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Then, it uses files from the Slothpixel API to parse this data. Stalkpixel can be used to stalk YouTubers, staff members, or your friends.
+Stalkpixel is a lightweight Node.js CLI application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Then, it uses data files from the Slothpixel API to parse this data. Stalkpixel can be used to stalk YouTubers, staff members, your friends, or any random player.
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Follow these simple steps to download and install Stalkpixel.
+This guide assumes that you have some experience with the terminal. Follow these simple steps to download and install Stalkpixel.
 
 ### Prerequisites
 
-To use this application, you must have npm and NodeJS installed.
+To use this application, you must have npm and Node.js installed.
 
 ### Installation
  
@@ -66,7 +66,7 @@ npm install
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Before you use the application, you must first edit the apikey property in secrets.json to include your API key. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key.
+Before you use the application, you must first edit the apikey property in config/secrets.json to include your API key. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key.
 ```json
 {
     "apikey": "<YOUR_KEY_HERE>"
@@ -78,28 +78,28 @@ To run the application, navigate into the main directory and run
 node .
 ```
 
-By default, the application calls the APIs with all players specified in targets.json. To call it with a different list of players, you can change that list or see instructions below.
+By default, the application calls the APIs with all players specified in config/targets.json. To call it with a different list of players, you can change that list or see instructions below.
 
 ### Specify a List of Players
 ```sh
 node . --stalk PLAYER1 PLAYER2 PLAYER3 PLAYER4
 ```
 
-The --stalk flag tells the application to call the APIs with the specified list of players rather than with those found in targets.json.
+The --stalk flag tells the application to call the APIs with the specified list of players rather than with those found in config/targets.json.
 
 ### Specify JSON Files
 ```sh
 node . --json file1.json dir1/file2.json
 ```
 
-The --json flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as targets.json to be valid.
+The --json flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as config/targets.json to be valid.
 
 ### API Key as Argument
 ```sh
 node . --key API_KEY
 ```
 
-The --key flag is an alternative method of providing your API key. It overrides the key found in secrets.json.
+The --key flag is an alternative method of providing your API key. It overrides the key found in config/secrets.json.
 
 
 <!-- ACKNOWLEDGEMENTS -->
