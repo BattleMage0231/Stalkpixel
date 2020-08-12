@@ -65,7 +65,7 @@ node . --stalk BattleMage_ # to run
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Before you use the application, you must first run the following command to set your API key. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key.
+Before you use the application, you must first run the following command to set your API key. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key. Please be aware that your API key is stored in plaintext form in stalkpixel/config/config.json. This means that anybody with access to your device with knowledge of this application may be able to find your API key.
 ```sh
 stalkpixel --setapikey <YOUR_KEY_HERE>
 ```
@@ -75,7 +75,7 @@ To run the application, run
 stalkpixel
 ```
 
-By default, the application calls the APIs with all players specified in stalkpixel/config/config.json. To call it with a different list of players, you can change that list using terminal flags specified in the documentation or see instructions below.
+By default, the application calls the APIs with all players specified in config.json. To call it with a different list of players, you can change that list using terminal flags specified in the documentation or see instructions below.
 
 ### Specify a List of Players
 ```sh
