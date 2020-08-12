@@ -57,13 +57,11 @@ if(parsed['stalk'] !== undefined) {
 } else if(parsed['json'] !== undefined) {
     for(let file of parsed['json']) {
         try {
-            targets.push(
-                ...(JSON.parse(fs.readFileSync(file))['targets'])
-            );
+            targets.push(...(require(file))['targets']);
         } catch(err) {}
     }
 } else {
-    targets.push(...(JSON.parse(fs.readFileSync(path.join(DIR, '..', 'targets.json')))['targets']))
+    targets.push(...(require('./../targets.json'))['targets']);
 }
 
 if(parsed['key']) {

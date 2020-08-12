@@ -23,6 +23,18 @@ Disadvantages:
 1. Location shown is not exact
 2. You need to be online
 
+## hypixel.paniek.de
+![hypixel.paniek.de](../assets/hypixel_paniek_de.PNG)
+
+Advantages:
+1. Very user-friendly and easy to navigate
+2. Allows you see the exact location of a player
+3. You do not need to be online
+   
+Disadvantages:
+1. The API can be disabled which means that online players may show as offline
+2. The website does not update as fast as the API so some results may be delayed or incorrect
+
 ## Stalkpixel
 ![stalkpixel](../assets/stalkpixel.PNG)
 

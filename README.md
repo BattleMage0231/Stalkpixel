@@ -26,7 +26,7 @@ Full credit for this template goes to othneildrew and contributors.
   - [Specify a List of Players](#specify-a-list-of-players)
   - [Specify JSON Files](#specify-json-files)
   - [API Key as Argument](#api-key-as-argument)
-- [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
 
 
 
@@ -35,7 +35,7 @@ Full credit for this template goes to othneildrew and contributors.
 
 ![product-screenshot](assets/Capture.PNG)
 
-Stalkpixel is a lightweight NodeJS application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Stalkpixel can be used to stalk YouTubers, staff members, or your friends.
+Stalkpixel is a lightweight NodeJS application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Then, it uses files from the Slothpixel API to parse this data. Stalkpixel can be used to stalk YouTubers, staff members, or your friends.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -102,9 +102,10 @@ node . --key API_KEY
 The --key flag is an alternative method of providing your API key. It overrides the key found in secrets.json.
 
 
-
-## Contributing
-
-This project is not fully mature and is in need of many more features. As such, contributions in the form of PRs would be greatly appreciated. The following are things that need to be added or improved:
-1. Parsing identifiers returned by the Hypixel API as readible names (Skyblock specifically)
-2. Adding more command line arguments
+<!-- ACKNOWLEDGEMENTS -->
+## Acknowledgements
+* [Mojang API](https://wiki.vg/Mojang_API)
+* [Hypixel API](https://github.com/HypixelDev/PublicAPI)
+* [Slothpixel Core](https://github.com/slothpixel/core)
+* [Slothpixel Constants](https://github.com/slothpixel/hypixelconstants)
+* [README Template](https://github.com/othneildrew/Best-README-Template)
