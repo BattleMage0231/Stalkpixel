@@ -43,6 +43,16 @@ const parsed = yargs
         describe: 'Do not print JSON dumps for online players',
     })
     .boolean('no-dump')
+    // cache player UUIDs
+    .option('cache', {
+        describe: 'Caches player UUIDs for less future API calls',
+    })
+    .boolean('cache')
+    // uncache player UUIDs
+    .option('uncache', {
+        describe: 'Uncaches the following list of names',
+    })
+    .array('uncache')
     // misc
     .alias('version', 'v')
     .help()
@@ -57,22 +67,28 @@ if(parsed['stalk'] !== undefined) {
 } else if(parsed['json'] !== undefined) {
     for(let file of parsed['json']) {
         try {
-            targets.push(...(require(file))['targets']);
+            targets.push(...(require(file)['targets']));
         } catch(err) {}
     }
 } else {
-    targets.push(...(require('./../targets.json'))['targets']);
+    targets.push(...(require('./../config/targets.json')['targets']));
 }
 
 if(parsed['key']) {
     config['apikey'] = parsed['key'];
 } else {
-    config['apikey'] = JSON.parse(fs.readFileSync(path.join(DIR, '..', 'secrets.json')))['apikey'];
+    config['apikey'] = require('./../config/secrets.json')['apikey'];
+}
+
+config['uncache'] = [];
+if(parsed['uncache']) {
+    config['uncache'] = parsed['uncache'];
 }
 
 config['online-only'] = (parsed['online-only'] === true);
 config['msg'] = (parsed['msg'] === undefined);
 config['dump'] = (parsed['dump'] === undefined);
+config['cache'] = (parsed['cache'] === true);
 
 exports.config = config;
 exports.targets = targets;

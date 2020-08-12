@@ -1,6 +1,6 @@
 # Alternatives
 
-There are some alternative methods to find the location and online status of a player. However, these alternatives often have disadvantages that makes them to be unreliable. Because of this, the following list was compiled of possible alternatives and their advantages and disadvantages.
+There are some alternative methods to find the location and online status of a player. However, the author felt that these alternatives often have disadvantages that makes them to be unreliable. Because of this, Stalkpixel was built to efficiently perform this task.
 
 ## Friend List
 ![friend-list](../assets/friendlist.PNG)

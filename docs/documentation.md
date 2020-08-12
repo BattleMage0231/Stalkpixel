@@ -108,3 +108,23 @@ Finished fetching statuses
 ```
 
 The --no-dump flag tells the application to not show the JSON dump for online players.
+
+## Cache UUID for Reuse
+```sh
+node . --stalk BattleMage_ Computer__Genius --cache
+```
+
+The --cache flag tells the application to save its fetched player UUIDs (from the Mojang API). It stores them in src/data/cache.json as a JSON object. If any players of the same name are queried in the future, Stalkpixel will forego the Mojang API call.
+
+However, this can get the wrong result if the player changed their name. If you are getting weird errors, it may be because of this and you may want to clear the cache or recache their name.
+
+The cache flag saves its data after execution is done, so quitting prematurely will cause it to lose all new data.
+
+## Clear Cached Data
+```sh
+node . --uncache BattleMage_
+```
+
+The --uncache flag tells the application to uncache the following array of names from the cache. 
+
+The uncache flag saves its data after execution is done, so quitting prematurely will cause it to lose all new data.

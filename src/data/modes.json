@@ -184,11 +184,11 @@
                 "modes": [
                     {
                         "key": "ZOMBIES_BAD_BLOOD",
-                        "name": "Bad Blood"
+                        "name": "Zombies - Bad Blood"
                     },
                     {
                         "key": "ZOMBIES_DEAD_END",
-                        "name": "Dead End"
+                        "name": "Zombies - Dead End"
                     }
                 ]
             },
@@ -198,17 +198,21 @@
                 "modes": [
                     {
                         "key": "HIDE_AND_SEEK_PARTY_POOPER",
-                        "name": "Party Pooper"
+                        "name": "Hide and Seek - Party Pooper"
                     },
                     {
                         "key": "HIDE_AND_SEEK_PROP_HUNT",
-                        "name": "Prop Hunt"
+                        "name": "Hide and Seek - Prop Hunt"
                     }
                 ]
             },
             {
                 "key": "EASTER_SIMULATOR",
                 "name": "Easter Simulator"
+            },
+            {
+                "key": "SCUBA_SIMULATOR",
+                "name": "Scuba Simulator"
             }
         ]
     },

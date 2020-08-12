@@ -39,10 +39,10 @@ function loadGameData() {
         let value = new Object();
         // set game's clean name
         value['name'] = game['name']; 
+        // mode data is stored at modes[GAME]['modes']
+        value['modes'] = new Object();
         // if game contains modes
         if(game['modes']) {
-            // mode data is stored at modes[GAME]['modes']
-            value['modes'] = new Object();
             // set mode of every mode object
             game['modes'].forEach((obj) => {
                 setMode(obj, value);
@@ -88,13 +88,16 @@ function displayStatus(name, status) {
         return;
     }
     console.log(`${name} is ${Messages.ONLINE}`);
-    // REMINDER TO MAKE THIS CLEANER
-    let _gameType = session['gameType'];
-    let _mode = session['mode'];
-    let _map = session['map'];
-    let gameType = (_gameType in modes) ? modes[_gameType]['name'] : _gameType;
-    let mode = (_gameType in modes && modes[_gameType]['modes'] && _mode in modes[_gameType]['modes']) ? modes[_gameType]['modes'][_mode] : _mode;
-    let map = _map;
+    // get game, mode, and map data
+    let gameType = session['gameType'];
+    let mode = session['mode'];
+    let map = session['map'];
+    if(gameType in modes) {
+        if(mode in modes[gameType]['modes']) {
+            mode = modes[gameType]['modes'][mode];
+        }
+        gameType = modes[gameType]['name'];
+    }
     if(gameType == 'Limbo') {
         console.log(`${PAD}In ${gameType}`);
     } else if(['Main Lobby', 'Tournament Hall', 'Replay Viewer'].includes(gameType)) {
