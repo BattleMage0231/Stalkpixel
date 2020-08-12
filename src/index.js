@@ -26,7 +26,7 @@ async function fetchAll(targets) {
             let uuid =  cache[target];
             if(uuid === undefined) {
                 uuid = await requests.fetchUUID(target);
-                if(config['cache']) {
+                if(uuid !== null && config['cache']) {
                     cache[target] = uuid;
                 }
             }
@@ -46,10 +46,21 @@ function run(config, targets) {
     if(config['msg']) {
         display.displayStartMessage();
     }
-    fetchAll(targets).then(() => {
+    new Promise((resolve, reject) => {
+        if(config['follow']) {
+            console.log('Started following player. Press CTRL-C to exit.\n');
+            fetchAll([config['follow']]);
+            setInterval(() => {
+                fetchAll([config['follow']]);
+            }, 5000);
+        } else {
+            fetchAll(targets).then(resolve);
+        }
+    }).then(() => {
         if(config['msg']) {
             display.displayFinishMessage();
         }
+    }).finally(() => {
         if(config['cache'] || config['uncache']) {
             fs.writeFileSync(path.join(DIR, 'data', 'cache.json'), JSON.stringify(cache));
         }

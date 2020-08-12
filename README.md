@@ -24,7 +24,7 @@ Full credit for this template goes to othneildrew and contributors.
   - [Installation](#installation)
 - [Usage](#usage)
   - [Specify a List of Players](#specify-a-list-of-players)
-  - [Specify JSON Files](#specify-json-files)
+  - [Continuously Follow a Player](#continuously-follow-a-player)
   - [API Key as Argument](#api-key-as-argument)
 - [Acknowledgements](#acknowledgements)
 
@@ -84,12 +84,12 @@ stalkpixel --stalk PLAYER1 PLAYER2 PLAYER3 PLAYER4
 
 The --stalk flag tells the application to call the APIs with the specified list of players rather than with those found in config.json.
 
-### Specify JSON Files
+### Continuously Follow a Player
 ```sh
-stalkpixel --json file1.json dir1/file2.json
+stalkpixel --follow PLAYER1
 ```
 
-The --json flag tells the application to call the APIs with players found in the specified JSON files. These files must follow the same structure as config.json to be valid.
+The --follow flag tells the application to continously stalk a player once every 5 seconds.
 
 ### API Key as Argument
 ```sh

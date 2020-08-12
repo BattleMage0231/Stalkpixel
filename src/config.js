@@ -73,6 +73,12 @@ const parsed = yargs
         describe: 'Adds targets to the list',
     })
     .array('addtargets')
+    // follow a single player
+    .option('follow', {
+        describe: 'Continuously query a player every 10 seconds',
+    })
+    .string('follow')
+    .alias('follow', 'f')
     // misc
     .alias('version', 'v')
     .help()
@@ -126,6 +132,7 @@ if(parsed['uncache']) {
     config['uncache'] = parsed['uncache'];
 }
 
+config['follow'] = parsed['follow'];
 config['online-only'] = (parsed['online-only'] === true);
 config['msg'] = (parsed['msg'] === undefined);
 config['dump'] = (parsed['dump'] === undefined);

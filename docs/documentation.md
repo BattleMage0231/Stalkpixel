@@ -162,3 +162,10 @@ stalkpixel --addtargets PLAYER1 PLAYER2
 ```
 
 The --addtargets flag appends the following list of players to the default stalk list.
+
+### Continuously Follow a Player
+```sh
+stalkpixel --follow PLAYER1
+```
+
+The --follow or -f flags tells the application to continously stalk a player once every 5 seconds. During this, you can hold CTRL-C or its equivalent to exit.
