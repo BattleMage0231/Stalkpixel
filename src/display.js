@@ -7,7 +7,6 @@ const DIR = __dirname;
 
 // formatting
 const format = require('./format.js');
-const PAD = format.PAD;
 
 // online status formatting
 let gameData = new Object();
@@ -67,10 +66,50 @@ function displayStartMessage() {
 function displayFinishMessage() {
     console.log(format.FINISHED_MSG);
 }
+// formatss status of an online player
+function displayOnlineStatus(name, session) {
+    let status = [];
+    // get game, mode, and map data
+    let gameType = session['gameType'];
+    let mode = session['mode'];
+    let map = session['map'];
+    // parse game data
+    if(gameType in gameData) {
+        // if game has modes
+        if(mode in gameData[gameType]['modes']) {
+            mode = gameData[gameType]['modes'][mode];
+        }
+        gameType = gameData[gameType]['name'];
+    }
+    // special messages
+    if(gameType == 'Limbo') {
+        status.push(`In ${gameType}`);
+        return status;
+    } else if(['Main Lobby', 'Tournament Hall', 'Replay Viewer'].includes(gameType)) {
+        status.push(`In a ${gameType}`);
+        return status;
+    } else if(mode == 'Lobby') {
+        status.push(`In a ${gameType} Lobby`);
+        return status;
+    } else {
+        status.push(`Playing ${gameType}`);
+    }
+    if(mode) {
+        if(gameType == 'SkyBlock') {
+            status.push(`In ${mode}`);
+        } else {
+            status.push(`In mode ${mode}`);
+        }
+    }
+    if(map) {
+        status.push(`On map ${map}`);
+    }
+    return status
+}
 
 // displays status of one player
 function displayStatus(name, status) {
-    if(status == null || !status['success']) {
+    if(!status|| !status['success']) {
         if(!config['online-only']) {
             console.log(format.inColor(`An exception occured when checking ${name}'s status\n`, format.RED));
         }
@@ -84,47 +123,13 @@ function displayStatus(name, status) {
         return;
     }
     console.log(`${name} is ${format.ONLINE}`);
-    // get game, mode, and map data
-    let gameType = session['gameType'];
-    let mode = session['mode'];
-    let map = session['map'];
-    // parse game data
-    if(gameType in gameData) {
-        if(mode in gameData[gameType]['modes']) {
-            mode = gameData[gameType]['modes'][mode];
-        }
-        gameType = gameData[gameType]['name'];
-    }
-    // special messages
-    if(gameType == 'Limbo') {
-        console.log(`${PAD}In ${gameType}`);
-    } else if(['Main Lobby', 'Tournament Hall', 'Replay Viewer'].includes(gameType)) {
-        console.log(`${PAD}In a ${gameType}`);
-        mode = null;
-        map = null;
-    } else if(mode == 'Lobby') {
-        console.log(`${PAD}In a ${gameType} Lobby`);
-        mode = null;
-        map = null;
-    } else if(gameType == 'Prototype') {
-        console.log(`${PAD}Playing ${mode}`);
-        mode = null;
-    } else {
-        console.log(`${PAD}Playing ${gameType}`);
-    }
-    if(mode) {
-        if(gameType == 'SkyBlock') {
-            console.log(`${PAD}In ${mode}`);
-        } else {
-            console.log(`${PAD}In mode ${mode}`);
-        }
-    }
-    if(map) {
-        console.log(`${PAD}On map ${map}`);
+    // display status
+    for(let line of displayOnlineStatus(name, session)) {
+        console.log(`${format.PAD}${line}`);
     }
     // JSON dump
     if(config['dump']) {
-        console.log(`${PAD}JSON dump: ${JSON.stringify(session)}`);
+        console.log(`${format.PAD}JSON dump: ${JSON.stringify(session)}`);
     }
     console.log('\n');
 }

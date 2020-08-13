@@ -1,16 +1,12 @@
 #!/usr/bin/env node
 
-const args = require('./config.js');
-const config = args.config;
-const targets = args.targets;
+const { config, targets } = require('./config.js');
 
 // api requests
 const requests = require('./requests.js');
-requests.setConfig(config);
 
 // displaying statuses
 const display = require('./display.js');
-display.setConfig(config);
 
 // cached uuids
 const DIR = __dirname;
@@ -38,6 +34,8 @@ async function fetchAll(targets) {
 
 // executes the program
 function run(config, targets) {
+    requests.setConfig(config);
+    display.setConfig(config);
     if(config['uncache']) {
         for(let name of config['uncache']) {
             delete cache[name];
@@ -49,11 +47,10 @@ function run(config, targets) {
     new Promise((resolve, reject) => {
         // follow mode vs normal mode
         if(config['follow']) {
+            targets = [config['follow']];
             console.log('Started following player. Press CTRL-C to exit.\n');
-            fetchAll([config['follow']]);
-            setInterval(() => {
-                fetchAll([config['follow']]);
-            }, 5000);
+            fetchAll(targets);
+            setInterval(() => fetchAll(targets), 5000);
         } else {
             fetchAll(targets).then(resolve);
         }

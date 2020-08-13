@@ -84,7 +84,7 @@ const parsed = yargs
     .alias('help', 'h')
     .argv;
 
-let config = new Object();
+let config = {};
 let targets = [];
 
 // config file
@@ -104,6 +104,7 @@ if(['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => pars
     if(parsed.hasOwnProperty('addtargets')) {
         configJSON['targets'].push(...parsed['addtargets']);
     }
+    // write to config.json
     fs.writeFileSync(path.join(DIR, '..', 'config', 'config.json'), JSON.stringify(configJSON, null, 4));
     process.exit(0);
 }
@@ -123,9 +124,8 @@ if(parsed['stalk'] !== undefined) {
 }
 
 // location of api key
-if(parsed['key']) {
-    config['apikey'] = parsed['key'];
-} else {
+config['apikey'] = parsed['key'];
+if(!config['apikey']) {
     config['apikey'] = configJSON['apikey'];
 }
 

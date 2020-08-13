@@ -19,9 +19,7 @@ function fetch(link) {
             res.on('data', (chunk) => {
                 data += chunk;
             });
-            res.on('end', () => {
-                resolve(data);
-            });
+            res.on('end', () => resolve(data));
         }).on('error', (err) => {
             reject(err.message);
         });
@@ -30,7 +28,7 @@ function fetch(link) {
 
 // wait for ms seconds
 function pause(ms) {
-    return new Promise((resolve, reject) => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // fetch Minecraft's UUID from a player name
