@@ -101,7 +101,8 @@ function displayOnlineStatus(name, session) {
             status.push(`In mode ${mode}`);
         }
     }
-    if(map) {
+    const NO_MAP = ['Build Battle'];
+    if(map && !NO_MAP.includes(gameType)) {
         status.push(`On map ${map}`);
     }
     return status
