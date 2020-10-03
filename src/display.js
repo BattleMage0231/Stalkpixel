@@ -33,7 +33,7 @@ function loadGameData() {
         let key = game['key'];
         let value = new Object();
         // set game's clean name
-        value['name'] = game['name']; 
+        value['name'] = game['name'];
         // mode data is stored at modes[GAME]['modes']
         value['modes'] = new Object();
         value['modes']['LOBBY'] = 'Lobby';
@@ -119,7 +119,7 @@ function displayStatus(name, status) {
     session = status['session'];
     if(!session['online']) {
         if(!config['online-only']) {
-            console.log(`${name} is ${format.NOT_ONLINE}\n`);
+            console.log(`${name} is ${format.OFFLINE}\n`);
         }
         return;
     }
