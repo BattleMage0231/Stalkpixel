@@ -62,7 +62,7 @@ function run(config, targets) {
     }).finally(() => {
         // write to cache with or without error
         if(config['cache'] || config['uncache']) {
-            fs.writeFileSync(path.join(DIR, 'data', 'cache.json'), JSON.stringify(cache));
+            fs.writeFileSync(path.join(DIR, 'data', 'cache.json'), JSON.stringify(cache, null, 4));
         }
     });
 }

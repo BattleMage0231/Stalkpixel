@@ -66,7 +66,7 @@ function displayStartMessage() {
 function displayFinishMessage() {
     console.log(format.FINISHED_MSG);
 }
-// formatss status of an online player
+// formats status of an online player
 function displayOnlineStatus(name, session) {
     let status = [];
     // get game, mode, and map data
@@ -132,7 +132,6 @@ function displayStatus(name, status) {
     if(config['dump']) {
         console.log(`${format.PAD}JSON dump: ${JSON.stringify(session)}`);
     }
-    console.log('\n');
 }
 
 exports.displayStatus = displayStatus;
