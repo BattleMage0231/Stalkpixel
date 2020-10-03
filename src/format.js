@@ -1,5 +1,4 @@
 // formatting related classes and constants
-
 const RED = '\033[91m';
 const GREEN = '\033[92m';
 const YELLOW = '\033[93m';

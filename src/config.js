@@ -91,17 +91,17 @@ let targets = [];
 let configJSON = require('./../config/config.json');
 
 // set config properties are not a part of the main program
-if(['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => parsed.hasOwnProperty(prop))) {
-    if(parsed.hasOwnProperty('setapikey')) {
+if (['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => parsed.hasOwnProperty(prop))) {
+    if (parsed.hasOwnProperty('setapikey')) {
         configJSON['apikey'] = parsed['setapikey'];
     }
-    if(parsed.hasOwnProperty('cleartargets')) {
+    if (parsed.hasOwnProperty('cleartargets')) {
         configJSON['targets'] = [];
     }
-    if(parsed.hasOwnProperty('settargets')) {
+    if (parsed.hasOwnProperty('settargets')) {
         configJSON['targets'] = parsed['settargets'];
     }
-    if(parsed.hasOwnProperty('addtargets')) {
+    if (parsed.hasOwnProperty('addtargets')) {
         configJSON['targets'].push(...parsed['addtargets']);
     }
     // write to config.json
@@ -110,14 +110,14 @@ if(['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => pars
 }
 
 // targets from --stalk, --json, or default
-if(parsed['stalk'] !== undefined) {
+if (parsed['stalk'] !== undefined) {
     targets = parsed['stalk'];
-} else if(parsed['json'] !== undefined) {
-    for(let file of parsed['json']) {
+} else if (parsed['json'] !== undefined) {
+    for (let file of parsed['json']) {
         try {
             let target = JSON.parse(fs.readFileSync(file));
             targets.push(...(target['targets']));
-        } catch(err) {}
+        } catch (err) {}
     }
 } else {
     targets.push(...(configJSON['targets']));
@@ -125,13 +125,13 @@ if(parsed['stalk'] !== undefined) {
 
 // location of api key
 config['apikey'] = parsed['key'];
-if(!config['apikey']) {
+if (!config['apikey']) {
     config['apikey'] = configJSON['apikey'];
 }
 
 // players being uncached
 config['uncache'] = [];
-if(parsed['uncache']) {
+if (parsed['uncache']) {
     config['uncache'] = parsed['uncache'];
 }
 
@@ -139,11 +139,11 @@ if(parsed['uncache']) {
 config['follow'] = parsed['follow'];
 config['online-only'] = parsed['online-only'];
 config['msg'] = parsed['msg'];
-if(parsed['msg'] === undefined) {
+if (parsed['msg'] === undefined) {
     config['msg'] = true;
 }
 config['dump'] = parsed['dump'];
-if(parsed['dump'] === undefined) {
+if (parsed['dump'] === undefined) {
     config['dump'] = true;
 }
 config['cache'] = parsed['cache'];
