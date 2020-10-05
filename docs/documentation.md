@@ -47,7 +47,7 @@ BattleMage_ is Online
   In a Bed Wars lobby
   JSON dump: {"online":true,"gameType":"BEDWARS","mode":"LOBBY"}
 
-Computer__Genius is Not Online
+Computer__Genius is Offline
 
 Finished fetching statuses
 ```
@@ -93,7 +93,7 @@ BattleMage_ is Online
   In a Bed Wars lobby
   JSON dump: {"online":true,"gameType":"BEDWARS","mode":"LOBBY"}
 
-Computer__Genius is Not Online
+Computer__Genius is Offline
 ```
 
 The --no-msg flag tells the application to not display the starting and finishing messages.
@@ -108,7 +108,7 @@ This API function can be disabled in game, so some offline players may actually 
 BattleMage_ is Online
   In a Bed Wars lobby
 
-Computer__Genius is Not Online
+Computer__Genius is Offline
 
 Finished fetching statuses
 ```
@@ -131,7 +131,7 @@ The cache flag saves its data after execution is done, so quitting prematurely w
 stalkpixel --uncache BattleMage_
 ```
 
-The --uncache flag tells the application to uncache the following array of names from the cache. 
+The --uncache flag tells the application to uncache the following array of names from the cache.
 
 The uncache flag saves its data after execution is done, so quitting prematurely will cause it to lose all new data.
 
