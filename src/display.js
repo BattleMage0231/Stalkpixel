@@ -130,7 +130,7 @@ function displayStatus(name, status) {
     }
     // JSON dump
     if (config['dump']) {
-        console.log(`${format.PAD}JSON dump: ${JSON.stringify(session)}`);
+        console.log(`${format.PAD}JSON dump: ${JSON.stringify(session)}\n`);
     }
 }
 
