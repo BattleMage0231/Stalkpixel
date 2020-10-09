@@ -133,5 +133,10 @@ setArgIfExists('follow', () => {
     }
 });
 
+// default to stalk mode
+if(!(config['stalk'] || config['follow'] || config['config'])) {
+    config['stalk'] = true;
+}
+
 exports.getConfig = getConfig;
 exports.editConfigFile = editConfigFile;

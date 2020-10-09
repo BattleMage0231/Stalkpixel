@@ -39,7 +39,7 @@ stalkpixel --config
 ```
 ```
 Waiting for your editor to close the config file...
-````
+```
 
 The --config flag opens the configuration file for Stalkpixel in your default text editor. By modifying this file, you can change the default API key and the list of targets.
 
