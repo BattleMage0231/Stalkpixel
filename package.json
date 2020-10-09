@@ -1,6 +1,6 @@
 {
   "name": "stalkpixel",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A lightweight NodeJS application to stalk Hypixel players",
   "keywords": [
     "hypixel",
@@ -16,10 +16,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Leyang Zou",
-  "contributors": ["Anthony Chen"],
+  "contributors": [
+    "Anthony Chen"
+  ],
   "license": "MIT",
   "bugs": "https://github.com/BattleMage0231/Stalkpixel/issues",
   "dependencies": {
+    "open": "^7.3.0",
     "yargs": "^15.4.1"
   },
   "bin": {

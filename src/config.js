@@ -2,12 +2,17 @@
 const fs = require('fs');
 const path = require('path');
 
+// open file in editor
+const open = require('open');
+
 // dependency to parse terminal arguments
 const yargs = require('yargs');
 
 const DIR = __dirname;
 
 const parsed = yargs
+    .option('config', {})
+    .boolean('config')
     // stalk command line list
     .option('stalk', {
         describe: 'Stalks the following list of players',
@@ -84,30 +89,33 @@ const parsed = yargs
     .alias('help', 'h')
     .argv;
 
-let config = {};
-let targets = [];
+// open config.json in default editor and wait for it to close
+async function editConfig() {
+    // not yet implemented
+    await open(path.join(DIR, '..', 'config', 'config.json'), {'wait': true});
+    configJSON = require('./../config/config.json');
+    config['config'] = false;
+    if (!config['apikey']) {
+        config['apikey'] = configJSON['apikey'];
+    }
+    if(targets.length == 0) {
+        targets = configJSON['targets'];
+    }
+}
+
+function getConfig() {
+    return config;
+}
+
+function getTargets() {
+    return targets;
+}
 
 // config file
 let configJSON = require('./../config/config.json');
 
-// set config properties are not a part of the main program
-if (['setapikey', 'settargets', 'cleartargets', 'addtargets'].some((prop) => parsed.hasOwnProperty(prop))) {
-    if (parsed.hasOwnProperty('setapikey')) {
-        configJSON['apikey'] = parsed['setapikey'];
-    }
-    if (parsed.hasOwnProperty('cleartargets')) {
-        configJSON['targets'] = [];
-    }
-    if (parsed.hasOwnProperty('settargets')) {
-        configJSON['targets'] = parsed['settargets'];
-    }
-    if (parsed.hasOwnProperty('addtargets')) {
-        configJSON['targets'].push(...parsed['addtargets']);
-    }
-    // write to config.json
-    fs.writeFileSync(path.join(DIR, '..', 'config', 'config.json'), JSON.stringify(configJSON, null, 4));
-    process.exit(0);
-}
+let config = {};
+let targets = [];
 
 // targets from --stalk, --json, or default
 if (parsed['stalk'] !== undefined) {
@@ -147,6 +155,8 @@ if (parsed['dump'] === undefined) {
     config['dump'] = true;
 }
 config['cache'] = parsed['cache'];
+config['config'] = parsed['config'];
 
-exports.config = config;
-exports.targets = targets;
+exports.getConfig = getConfig;
+exports.getTargets = getTargets;
+exports.editConfig = editConfig;

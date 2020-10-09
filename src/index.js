@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 const {
-    config,
-    targets
+    getConfig,
+    getTargets,
+    editConfig,
 } = require('./config.js');
 
 // api requests
@@ -18,7 +19,7 @@ const fs = require('fs');
 let cache = require('./data/cache.json');
 
 // fetch all statuses in array of names
-async function fetchAll(targets) {
+async function fetchAll(config, targets) {
     for (target of targets) {
         let status;
         try {
@@ -47,15 +48,15 @@ function run(config, targets) {
     if (config['msg']) {
         display.displayStartMessage();
     }
-    new Promise((resolve, reject) => {
+    new Promise(resolve => {
         // follow mode vs normal mode
         if (config['follow']) {
             targets = [config['follow']];
             console.log('Started following player. Press CTRL-C to exit.\n');
-            fetchAll(targets);
-            setInterval(() => fetchAll(targets), 5000);
+            fetchAll(config, targets);
+            setInterval(() => fetchAll(config, targets), 5000);
         } else {
-            fetchAll(targets).then(resolve);
+            fetchAll(config, targets).then(resolve);
         }
     }).then(() => {
         // if exited without error
@@ -70,4 +71,9 @@ function run(config, targets) {
     });
 }
 
-run(config, targets);
+// open config file in editor if needed
+if(getConfig()['config']) {
+    editConfig().then(() => run(getConfig(), getTargets()));
+} else {
+    run(getConfig(), getTargets());
+}
