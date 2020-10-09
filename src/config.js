@@ -96,17 +96,6 @@ async function editConfigFile() {
         path.join(DIR, '..', 'config', 'config.json'),
         {'wait': true} // wait for file to be closed
     );
-    // update configJSON
-    configJSON = require('./../config/config.json');
-    // no longer need to config
-    config['config'] = false;
-    // update apikey and targets
-    if (!config['apikey']) {
-        config['apikey'] = configJSON['apikey'];
-    }
-    if(config['targets'].length == 0) {
-        config['targets'] = configJSON['targets'];
-    }
 }
 
 // set config argument from parsed if exists

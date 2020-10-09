@@ -82,9 +82,9 @@ function run(config) {
     });
 }
 
-// open config file in editor if needed
+// edit config or execute
 if(getConfig()['config']) {
-    editConfigFile().then(() => run(getConfig()));
+    editConfigFile();
 } else {
     run(getConfig());
 }
