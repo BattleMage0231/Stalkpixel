@@ -22,12 +22,6 @@ const parsed = yargs
     })
     .array('stalk')
     .alias('stalk', 's')
-    // stalk json files
-    .option('json', {
-        describe: 'Stalks players in the given JSON files',
-    })
-    .array('json')
-    .alias('json', 'j')
     // alternate way to add api key
     .option('key', {
         describe: 'Externally provides an API key',
@@ -60,26 +54,6 @@ const parsed = yargs
         describe: 'Uncaches the following list of names',
     })
     .array('uncache')
-    // set api key
-    .option('setapikey', {
-        describe: 'Sets or updates your API key to the next argument',
-    })
-    .string('setapikey')
-    // set targets
-    .option('settargets', {
-        describe: 'Sets the targets list to the following list',
-    })
-    .array('settargets')
-    // clear targets
-    .option('cleartargets', {
-        describe: 'Clear the targets list'
-    })
-    .boolean('cleartargets')
-    // add targets
-    .option('addtargets', {
-        describe: 'Adds targets to the list',
-    })
-    .array('addtargets')
     // follow a single player
     .option('follow', {
         describe: 'Continuously query a player every 10 seconds',
@@ -99,7 +73,6 @@ let configJSON = require('./../config/config.json');
 let config = {
     'config': false,
     'stalk': false,
-    'json': false,
     'apikey': '',
     'online-only': false,
     'msg': true,
@@ -117,6 +90,7 @@ function getConfig() {
 
 // open config.json in default editor and wait for it to close
 async function editConfigFile() {
+    console.log('Waiting for your editor to close the config file...\n');
     // open file in editor
     await open(
         path.join(DIR, '..', 'config', 'config.json'),
@@ -132,18 +106,6 @@ async function editConfigFile() {
     }
     if(config['targets'].length == 0) {
         config['targets'] = configJSON['targets'];
-    }
-}
-
-// targets from --stalk or --json
-if (parsed['stalk'] !== undefined) {
-    config['targets'] = parsed['stalk'];
-} else if (parsed['json'] !== undefined) {
-    for (let file of parsed['json']) {
-        try {
-            let target = JSON.parse(fs.readFileSync(file));
-            config['targets'].push(...(target['targets']));
-        } catch (err) {}
     }
 }
 
@@ -168,6 +130,11 @@ function setArgIfExists(arg, callback = () => {}, newArg = arg) {
 
 // api key as argument
 setArgIfExists('key', () => {}, 'apikey');
+
+// list of targets in normal mode
+setArgIfExists('stalk', () => {
+    config['stalk'] = true;
+}, 'targets');
 
 // follow mode
 setArgIfExists('follow', () => {

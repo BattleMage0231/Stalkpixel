@@ -35,6 +35,28 @@ async function fetchAll(config, targets) {
     }
 }
 
+// executes follow mode
+async function follow(config) {
+    console.log('Started following player. Press CTRL-C to exit.\n');
+    while(true) {
+        await fetchAll(config, config['targets']); // fetch target data
+        await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5000ms
+    }
+}
+
+// executes stalk mode
+async function stalk(config) {
+    await fetchAll(config, config['targets']);
+}
+
+async function runMode(config) {
+    if(config['follow']) {
+        await follow(config);
+    } else if(config['stalk']) {
+        await stalk(config);
+    }
+}
+
 // executes the program
 function run(config) {
     requests.setConfig(config);
@@ -47,16 +69,7 @@ function run(config) {
     if (config['msg']) {
         display.displayStartMessage();
     }
-    new Promise(resolve => {
-        // follow mode vs normal mode
-        if (config['follow']) {
-            console.log('Started following player. Press CTRL-C to exit.\n');
-            fetchAll(config, config['targets']);
-            setInterval(() => fetchAll(config, config['targets']), 5000);
-        } else {
-            fetchAll(config, config['targets']).then(resolve);
-        }
-    }).then(() => {
+    runMode(config).then(() => {
         // if exited without error
         if (config['msg']) {
             display.displayFinishMessage();
