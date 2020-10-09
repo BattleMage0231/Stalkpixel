@@ -2,8 +2,7 @@
 
 const {
     getConfig,
-    getTargets,
-    editConfig,
+    editConfigFile,
 } = require('./config.js');
 
 // api requests
@@ -37,7 +36,7 @@ async function fetchAll(config, targets) {
 }
 
 // executes the program
-function run(config, targets) {
+function run(config) {
     requests.setConfig(config);
     display.setConfig(config);
     if (config['uncache']) {
@@ -51,12 +50,11 @@ function run(config, targets) {
     new Promise(resolve => {
         // follow mode vs normal mode
         if (config['follow']) {
-            targets = [config['follow']];
             console.log('Started following player. Press CTRL-C to exit.\n');
-            fetchAll(config, targets);
-            setInterval(() => fetchAll(config, targets), 5000);
+            fetchAll(config, config['targets']);
+            setInterval(() => fetchAll(config, config['targets']), 5000);
         } else {
-            fetchAll(config, targets).then(resolve);
+            fetchAll(config, config['targets']).then(resolve);
         }
     }).then(() => {
         // if exited without error
@@ -73,7 +71,7 @@ function run(config, targets) {
 
 // open config file in editor if needed
 if(getConfig()['config']) {
-    editConfig().then(() => run(getConfig(), getTargets()));
+    editConfigFile().then(() => run(getConfig()));
 } else {
-    run(getConfig(), getTargets());
+    run(getConfig());
 }

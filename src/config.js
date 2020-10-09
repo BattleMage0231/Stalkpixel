@@ -11,7 +11,10 @@ const yargs = require('yargs');
 const DIR = __dirname;
 
 const parsed = yargs
-    .option('config', {})
+    // config
+    .option('config', {
+        describe: 'Opens the configuration file in a text editor',
+    })
     .boolean('config')
     // stalk command line list
     .option('stalk', {
@@ -89,74 +92,90 @@ const parsed = yargs
     .alias('help', 'h')
     .argv;
 
-// open config.json in default editor and wait for it to close
-async function editConfig() {
-    // not yet implemented
-    await open(path.join(DIR, '..', 'config', 'config.json'), {'wait': true});
-    configJSON = require('./../config/config.json');
-    config['config'] = false;
-    if (!config['apikey']) {
-        config['apikey'] = configJSON['apikey'];
-    }
-    if(targets.length == 0) {
-        targets = configJSON['targets'];
-    }
-}
+// config file
+let configJSON = require('./../config/config.json');
+
+// default values
+let config = {
+    'config': false,
+    'stalk': false,
+    'json': false,
+    'apikey': '',
+    'online-only': false,
+    'msg': true,
+    'dump': true,
+    'cache': false,
+    'uncache': [],
+    'follow': false,
+    'targets': [],
+    ...configJSON,
+};
 
 function getConfig() {
     return config;
 }
 
-function getTargets() {
-    return targets;
+// open config.json in default editor and wait for it to close
+async function editConfigFile() {
+    // open file in editor
+    await open(
+        path.join(DIR, '..', 'config', 'config.json'),
+        {'wait': true} // wait for file to be closed
+    );
+    // update configJSON
+    configJSON = require('./../config/config.json');
+    // no longer need to config
+    config['config'] = false;
+    // update apikey and targets
+    if (!config['apikey']) {
+        config['apikey'] = configJSON['apikey'];
+    }
+    if(config['targets'].length == 0) {
+        config['targets'] = configJSON['targets'];
+    }
 }
 
-// config file
-let configJSON = require('./../config/config.json');
-
-let config = {};
-let targets = [];
-
-// targets from --stalk, --json, or default
+// targets from --stalk or --json
 if (parsed['stalk'] !== undefined) {
-    targets = parsed['stalk'];
+    config['targets'] = parsed['stalk'];
 } else if (parsed['json'] !== undefined) {
     for (let file of parsed['json']) {
         try {
             let target = JSON.parse(fs.readFileSync(file));
-            targets.push(...(target['targets']));
+            config['targets'].push(...(target['targets']));
         } catch (err) {}
     }
-} else {
-    targets.push(...(configJSON['targets']));
 }
 
-// location of api key
-config['apikey'] = parsed['key'];
-if (!config['apikey']) {
-    config['apikey'] = configJSON['apikey'];
+// set config argument from parsed if exists
+function setArgIfExists(arg, callback = () => {}, newArg = arg) {
+    if(parsed[arg] !== undefined) {
+        config[newArg] = parsed[arg];
+        callback(); // run callback function
+    }
 }
 
-// players being uncached
-config['uncache'] = [];
-if (parsed['uncache']) {
-    config['uncache'] = parsed['uncache'];
-}
+// simple arguments which can simply be set by calling
+// setArgIfExists without any callbacks
+[
+    'online-only',  // online only mode
+    'msg',          // display starting and finishing messages
+    'dump',         // display JSON dumps
+    'uncache',      // uncache players
+    'cache',        // cache data
+    'config',       // edit config file
+].map(arg => setArgIfExists(arg));
 
-// boolean arguments
-config['follow'] = parsed['follow'];
-config['online-only'] = parsed['online-only'];
-config['msg'] = parsed['msg'];
-if (parsed['msg'] === undefined) {
-    config['msg'] = true;
-}
-config['dump'] = parsed['dump'];
-if (parsed['dump'] === undefined) {
-    config['dump'] = true;
-}
-config['cache'] = parsed['cache'];
-config['config'] = parsed['config'];
+// api key as argument
+setArgIfExists('key', () => {}, 'apikey');
+
+// follow mode
+setArgIfExists('follow', () => {
+    // set target of follow if it is the mode
+    if(config['follow']) {
+        config['targets'] = [parsed['follow']];
+    }
+});
 
 exports.getConfig = getConfig;
-exports.getTargets = getTargets;
-exports.editConfig = editConfig;
+exports.editConfigFile = editConfigFile;
