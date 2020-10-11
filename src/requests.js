@@ -51,7 +51,8 @@ async function fetchUUID(name) {
 
 // get player's Hypixel status from UUID
 async function fetchStatus(uuid, key) {
-    res = JSON.parse(await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`));
+    let res = await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`);
+    res = JSON.parse(res); // this line will throw an error for 502 bad gateway, which returns HTML
     if (res.throttle) {
         if (config['follow']) {
             console.log('Exceeded Hypixel\'s API rate limit\n');

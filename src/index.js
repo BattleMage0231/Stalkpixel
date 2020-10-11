@@ -30,7 +30,9 @@ async function fetchAll(config, targets) {
                 }
             }
             status = await requests.fetchStatus(uuid, config['apikey']);
-        } catch (err) {}
+        } catch (err) {
+            //console.log(err);
+        }
         display.displayStatus(target, status);
     }
 }
