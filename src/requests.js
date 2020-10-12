@@ -25,46 +25,37 @@ function fetch(link) {
     });
 }
 
-// wait for ms seconds
-function pause(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 // fetch Minecraft's UUID from a player name
+// returns null if the request exceeds the API rate limit
 async function fetchUUID(name) {
-    res = JSON.parse(await fetch(MOJANG_ENDPOINT + name));
+    let res = await fetch(MOJANG_ENDPOINT + name);
+    // mojang returns an empty string if the username doesn't exist
+    if(res == '') {
+        return undefined; // undefined !== null
+    }
+    res = JSON.parse(res);
+    // too many requests sent
     if (res.error && res.error == 'TooManyRequestsException') {
         if (config['follow']) {
             console.log('Exceeded Mojang\'s API rate limit\n');
-            return null;
         }
-        if (!config['online-only']) {
-            console.log('Exceeded Mojang\'s API rate limit, retrying every 10 seconds\n');
-        }
+        return null;
     }
-    while (res.error && res.error == 'TooManyRequestsException') {
-        await pause(10000);
-        res = JSON.parse(await fetch(MOJANG_ENDPOINT + name));
-    }
+    // return uuid
     return res['id'];
 }
 
 // get player's Hypixel status from UUID
+// returns null if the request exceeds the API rate limit
 async function fetchStatus(uuid, key) {
     let res = await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`);
     res = JSON.parse(res); // this line will throw an error for 502 bad gateway, which returns HTML
+    // too many requests sent
     if (res.throttle) {
         if (config['follow']) {
             console.log('Exceeded Hypixel\'s API rate limit\n');
-            return null;
         }
-        if (!config['online-only']) {
-            console.log('Exceeded Hypixel\'s API rate limit, retrying every 10 seconds\n');
-        }
-    }
-    while (res.throttle) {
-        await pause(10000);
-        res = JSON.parse(await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`));
+        return null;
     }
     return res;
 }
