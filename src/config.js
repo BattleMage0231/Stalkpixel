@@ -82,14 +82,11 @@ function getConfig() {
     return config;
 }
 
-// open config.json in default editor and wait for it to close
+// open config.json in default editor asynchronously
 async function editConfigFile() {
-    console.log('Waiting for your editor to close the config file...\n');
+    console.log('\nOpening the config file in your default editor...');
     // open file in editor
-    await open(
-        path.join(DIR, '..', 'config', 'config.json'),
-        {'wait': true} // wait for file to be closed
-    );
+    await open(path.join(DIR, '..', 'config', 'config.json'));
 }
 
 // set config argument from parsed if exists
