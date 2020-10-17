@@ -74,7 +74,12 @@ getStatus.hypixelLock = false;
 async function follow(config) {
     console.log('Started following player. Press CTRL-C to exit.\n');
     while(true) {
-        await fetchAll(config, config['targets']); // fetch target data
+        let status = null;
+        try {
+            // await status
+            status = await getStatus(config, config['targets'][0]);
+        } catch(err) {}
+        display.displayStatus(config['targets'][0], status);
         await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5000ms
     }
 }

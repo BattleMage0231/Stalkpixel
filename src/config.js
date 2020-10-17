@@ -71,16 +71,16 @@ let configJSON = require('./../config/config.json');
 
 // default values
 let config = {
-    'config': false,
-    'stalk': false,
-    'apikey': '',
-    'online-only': false,
-    'msg': true,
-    'dump': true,
-    'cache': false,
-    'uncache': [],
-    'follow': false,
-    'targets': [],
+    'config': false,        // edit config file
+    'stalk': false,         // stalk mode
+    'apikey': '',           // api key
+    'online-only': false,   // online only mode
+    'msg': true,            // display starting and finishing messages
+    'dump': true,           // display JSON dumps
+    'cache': false,         // cache data
+    'uncache': [],          // uncache players
+    'follow': false,        // follow mode
+    'targets': [],          // targets
     ...configJSON,
 };
 
@@ -107,25 +107,21 @@ function setArgIfExists(arg, callback = () => {}, newArg = arg) {
 }
 
 // simple arguments which can simply be set by calling
-// setArgIfExists without any callbacks
-[
-    'online-only',  // online only mode
-    'msg',          // display starting and finishing messages
-    'dump',         // display JSON dumps
-    'uncache',      // uncache players
-    'cache',        // cache data
-    'config',       // edit config file
-].map(arg => setArgIfExists(arg));
+// setArgIfExists without any callbacks or aliases
+['online-only', 'msg', 'dump', 'uncache', 'cache', 'config']
+    .forEach(arg => setArgIfExists(arg));
 
 // api key as argument
 setArgIfExists('key', () => {}, 'apikey');
 
 // list of targets in normal mode
+// ['stalk'] in parsed is actually a list of targets
+// while ['stalk'] in config is a boolean
 setArgIfExists('stalk', () => {
     config['stalk'] = true;
 }, 'targets');
 
-// follow mode
+// check follow mode
 setArgIfExists('follow', () => {
     // set target of follow if it is the mode
     if(config['follow']) {
