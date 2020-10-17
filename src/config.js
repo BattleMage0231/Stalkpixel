@@ -13,7 +13,7 @@ const DIR = __dirname;
 const parsed = yargs
     // config
     .option('config', {
-        describe: 'Opens the configuration file in a text editor',
+        describe: 'Opens the configuration file in your text editor',
     })
     .boolean('config')
     // stalk command line list
