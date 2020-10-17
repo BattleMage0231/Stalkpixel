@@ -10,11 +10,6 @@ function inColor(text, color) {
 
 const OFFLINE = inColor('Offline', RED);
 const ONLINE = inColor('Online', GREEN);
-const WARNING_MSG = inColor(
-    'This API function can be disabled in game, so some offline players may actually be online',
-    YELLOW
-);
-const FINISHED_MSG = inColor('Finished fetching statuses', YELLOW);
 
 const PAD = '  ';
 
@@ -26,7 +21,5 @@ exports.inColor = inColor;
 
 exports.OFFLINE = OFFLINE;
 exports.ONLINE = ONLINE;
-exports.WARNING_MSG = WARNING_MSG;
-exports.FINISHED_MSG = FINISHED_MSG;
 
 exports.PAD = PAD;

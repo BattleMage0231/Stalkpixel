@@ -57,15 +57,6 @@ function setConfig(obj) {
     config = obj;
 }
 
-// display the starting message
-function displayStartMessage() {
-    console.log(`${format.WARNING_MSG}\n`);
-}
-
-// displays the finishing message
-function displayFinishMessage() {
-    console.log(format.FINISHED_MSG);
-}
 // formats status of an online player
 function displayOnlineStatus(name, session) {
     let status = [];
@@ -135,6 +126,4 @@ function displayStatus(name, status) {
 }
 
 exports.displayStatus = displayStatus;
-exports.displayStartMessage = displayStartMessage;
-exports.displayFinishMessage = displayFinishMessage;
 exports.setConfig = setConfig;

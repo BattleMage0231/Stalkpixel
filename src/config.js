@@ -34,11 +34,6 @@ const parsed = yargs
     })
     .boolean('online-only')
     .alias('online-only', 'o')
-    // print without start and end msg
-    .option('no-msg', {
-        describe: 'Do not print the start and finishing messages',
-    })
-    .boolean('no-msg')
     // do not print JSON dumps
     .option('no-dump', {
         describe: 'Do not print JSON dumps for online players',
@@ -75,7 +70,6 @@ let config = {
     'stalk': false,         // stalk mode
     'apikey': '',           // api key
     'online-only': false,   // online only mode
-    'msg': true,            // display starting and finishing messages
     'dump': true,           // display JSON dumps
     'cache': false,         // cache data
     'uncache': [],          // uncache players
@@ -108,7 +102,7 @@ function setArgIfExists(arg, callback = () => {}, newArg = arg) {
 
 // simple arguments which can simply be set by calling
 // setArgIfExists without any callbacks or aliases
-['online-only', 'msg', 'dump', 'uncache', 'cache', 'config']
+['online-only', 'dump', 'uncache', 'cache', 'config']
     .forEach(arg => setArgIfExists(arg));
 
 // api key as argument

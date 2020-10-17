@@ -72,7 +72,7 @@ getStatus.hypixelLock = false;
 
 // executes follow mode
 async function follow(config) {
-    console.log('Started following player. Press CTRL-C to exit.\n');
+    console.log('\nStarted following player. Press CTRL-C to exit.\n');
     while(true) {
         let status = null;
         try {
@@ -95,6 +95,7 @@ async function stalk(config) {
         statuses.push(getStatus(config, target));
     }
     // display statuses
+    console.log();
     for(let i = 0; i < statuses.length; ++i) {
         let status = null;
         try {
@@ -111,6 +112,8 @@ async function runMode(config) {
         await follow(config);
     } else if(config['stalk']) {
         await stalk(config);
+    } else if(config['config']) {
+        await editConfigFile();
     }
 }
 
@@ -123,15 +126,7 @@ function run(config) {
             delete cache[name];
         }
     }
-    if (config['msg']) {
-        display.displayStartMessage();
-    }
-    runMode(config).then(() => {
-        // if exited without error
-        if (config['msg']) {
-            display.displayFinishMessage();
-        }
-    }).finally(() => {
+    runMode(config).finally(() => {
         // write to cache with or without error
         if (config['cache'] || config['uncache']) {
             fs.writeFileSync(path.join(DIR, 'data', 'cache.json'), JSON.stringify(cache, null, 4));
@@ -139,9 +134,4 @@ function run(config) {
     });
 }
 
-// edit config or execute
-if(getConfig()['config']) {
-    editConfigFile();
-} else {
-    run(getConfig());
-}
+run(getConfig());
