@@ -24,9 +24,14 @@ async function getStatus(config, target) {
     let uuid = cache[target]; // uuid already in cache
     // otherwise calculate it
     if (uuid === undefined) {
-        uuid = await requests.fetchUUID(target); // request UUID
-        // too many requests, try again in 10 seconds 
-        while(uuid === null) {
+        uuid = await requests.fetchUUID(target);
+        if(uuid == null && config['follow']) {
+            // don't retry if follow mode
+            console.log(`Exceeded Mojang\'s API rate limit\n`);
+            return null;
+        }
+        // rate limit exceeded
+        while(uuid == null) {
             // mojangLock is used to regulate the amount of cooldown notifications sent
             // this way, only one cooldown message is sent every 10 seconds
             if(!this.mojangLock) {
@@ -38,30 +43,33 @@ async function getStatus(config, target) {
             }
             // wait 10 seconds
             await new Promise(resolve => setTimeout(resolve, 10000));
-            status = await requests.fetchUUID(target); // try again
+            // try again
+            uuid = await requests.fetchUUID(target);
         }
         // cache uuid
-        if (uuid !== undefined && config['cache']) {
+        if (config['cache']) {
             cache[target] = uuid;
         }
     }
-    // uuid fetching unsuccessful
-    if(uuid === undefined) {
-        return null;
-    }
     // get hypixel status information
     status = await requests.fetchStatus(uuid, config['apikey']);
-    // too many requests, wait 10s
-    while(status === null) {
+    // don't retry if follow mode
+    if(uuid == null && config['follow']) {
+        console.log(`Exceeded Hypixel\'s API rate limit\n`);
+        return null;
+    }
+    // rate limit exceeded
+    while(status == null) {
         // same as mojangLock but for the Hypixel api
         if(!this.hypixelLock) {
             this.hypixelLock = true; // lock cooldown message
             console.log(`Exceeded Hypixel\'s API rate limit, trying again soon...\n`);
-            setTimeout((() => getStatus.hypixelLock = false).bind(this), 10000);
+            setTimeout((() => this.hypixelLock = false).bind(this), 10000);
         }
         // wait 10 seconds
         await new Promise(resolve => setTimeout(resolve, 10000));
-        status = await requests.fetchStatus(uuid, config['apikey']); // try again
+        // get status again
+        status = await requests.fetchStatus(uuid, config['apikey']);
     }
     return status;
 }
@@ -78,8 +86,14 @@ async function follow(config) {
         try {
             // await status
             status = await getStatus(config, config['targets'][0]);
-        } catch(err) {}
-        display.displayStatus(config['targets'][0], status);
+        } catch(err) {
+            // display error
+            display.displayStatus(config['targets'][0], status);
+        }
+        // display status if it exists
+        if(status !== null) {
+            display.displayStatus(config['targets'][0], status);
+        }
         await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5000ms
     }
 }

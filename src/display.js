@@ -92,7 +92,7 @@ function displayOnlineStatus(name, session) {
             status.push(`In mode ${mode}`);
         }
     }
-    const NO_MAP = ['Build Battle'];
+    const NO_MAP = ['Build Battle', 'Housing'];
     if (map && !NO_MAP.includes(gameType)) {
         status.push(`On map ${map}`);
     }
