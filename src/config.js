@@ -1,11 +1,10 @@
-// read write files
 const fs = require('fs');
 const path = require('path');
 
 // open file in editor
 const open = require('open');
 
-// dependency to parse terminal arguments
+// parse terminal arguments
 const yargs = require('yargs');
 
 const DIR = __dirname;
@@ -61,7 +60,6 @@ const parsed = yargs
     .alias('help', 'h')
     .argv;
 
-// config file
 let configJSON = require('./../config/config.json');
 
 // default values
@@ -78,39 +76,32 @@ let config = {
     ...configJSON,
 };
 
-// open config.json in default editor asynchronously
 async function editConfigFile() {
     console.log('\nOpening the config file in your default editor...');
-    // open file in editor
     await open(path.join(DIR, '..', 'config', 'config.json'));
 }
 
-// set config argument from parsed if exists
 function setArgIfExists(arg, callback = () => {}, newArg = arg) {
     if(parsed[arg] !== undefined) {
         config[newArg] = parsed[arg];
-        callback(); // run callback function
+        callback(); 
     }
 }
 
-// simple arguments which can simply be set by calling
-// setArgIfExists without any callbacks or aliases
+// simple arguments
 ['online-only', 'dump', 'uncache', 'cache', 'config']
     .forEach(arg => setArgIfExists(arg));
 
-// api key as argument
+
 setArgIfExists('key', () => {}, 'apikey');
 
-// list of targets in normal mode
-// ['stalk'] in parsed is actually a list of targets
-// while ['stalk'] in config is a boolean
+// ['stalk'] in config is a boolean indicating whether the mode is stalk
 setArgIfExists('stalk', () => {
     config['stalk'] = true;
 }, 'targets');
 
-// check follow mode
 setArgIfExists('follow', () => {
-    // set target of follow if it is the mode
+    // set target
     if(config['follow']) {
         config['targets'] = [parsed['follow']];
     }

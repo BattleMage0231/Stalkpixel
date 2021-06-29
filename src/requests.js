@@ -1,10 +1,8 @@
-// api requests and endpoints
 const https = require('https');
 
 const MOJANG_ENDPOINT = 'https://api.mojang.com/users/profiles/minecraft/';
 const HYPIXEL_ENDPOINT = 'https://api.hypixel.net/status?';
 
-// custom error types
 class APIError extends Error {
     constructor(message) {
         super(message);
@@ -12,7 +10,7 @@ class APIError extends Error {
     }
 }
 
-// returns a promise of GET data from a link
+// returns GET data
 async function fetch(link) {
     return new Promise((resolve, reject) => {
         let data = '';
@@ -31,34 +29,29 @@ async function fetch(link) {
 // returns null if the rate limit has been exceeded
 async function fetchUUID(name) {
     let res = await fetch(MOJANG_ENDPOINT + name);
-    // mojang returns an empty string if the username doesn't exist
+    // empty string if the username doesn't exist
     if(res === '') {
         throw new APIError(`The username ${name} doesn't exist in the Mojang API`);
     }
     res = JSON.parse(res);
-    // error occured
     if(res.error) {
-        // rate limit error
         if(res.error === 'TooManyRequestsException') {
             return null;
         }
-        // other API errors
         throw new APIError(res.errorMessage);
     }
-    // return uuid
     return res['id'];
 }
 
 // get player's Hypixel status from UUID
-// returns null if the request exceeds the API rate limit
+// returns null if the rate limit has been exceeded
 async function fetchStatus(uuid, key) {
     let res = await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`);
-    res = JSON.parse(res); // this line will throw an error for 502 bad gateway, which returns HTML
-    // too many requests sent
+    res = JSON.parse(res); // throws an error for bad gateway, which returns HTML
+    // too many requests
     if(res.throttle) {
         return null;
     }
-    // invalid api key
     if(res.success === false) {
         throw new APIError(res.cause);
     }
