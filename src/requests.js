@@ -25,9 +25,9 @@ async function fetch(link) {
     });
 }
 
-// fetch Minecraft's UUID from a player name
+// fetch Minecraft's UUID and username from a player name
 // returns null if the rate limit has been exceeded
-async function fetchUUID(name) {
+async function fetchData(name) {
     let res = await fetch(MOJANG_ENDPOINT + name);
     // empty string if the username doesn't exist
     if(res === '') {
@@ -40,7 +40,7 @@ async function fetchUUID(name) {
         }
         throw new APIError(res.errorMessage);
     }
-    return res['id'];
+    return res;
 }
 
 // get player's Hypixel status from UUID
@@ -62,5 +62,5 @@ exports.MOJANG_ENDPOINT = MOJANG_ENDPOINT;
 exports.HYPIXEL_ENDPOINT = HYPIXEL_ENDPOINT;
 
 exports.fetch = fetch;
-exports.fetchUUID = fetchUUID;
+exports.fetchData = fetchData;
 exports.fetchStatus = fetchStatus;

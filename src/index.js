@@ -17,17 +17,22 @@ const cache = require('./data/cache.json');
 
 // returns null or an error if unsuccessful
 async function getStatus(config, target) {
+    let cacheKey = target.trim().toUpperCase(); // find cache key
     let status = null;
-    let uuid = cache[target]; 
-    if(uuid === undefined) {
-        uuid = await requests.fetchUUID(target);
-        if(uuid == null && config['follow']) {
+    let uuid, username;
+    if(cache[cacheKey]) {
+        uuid = cache[cacheKey]['uuid'];
+        username = cache[cacheKey]['name'];
+    }
+    if(uuid === undefined || username === undefined) {
+        let data = await requests.fetchData(target);
+        if(data == null && config['follow']) {
             // don't retry if follow mode
             console.log(`Exceeded Mojang's API rate limit\n`);
             return null;
         }
-        // rate limit exceeded
-        while(uuid == null) {
+        // while rate limit exceeded
+        while(data == null) {
             // regulate the amount of cooldown notifications sent (one every 10 seconds)
             if(!this.mojangLock) {
                 this.mojangLock = true; // lock mojang cooldown
@@ -37,12 +42,16 @@ async function getStatus(config, target) {
             }
             // wait 10 seconds
             await new Promise(resolve => setTimeout(resolve, 10000));
-            // try again
-            uuid = await requests.fetchUUID(target);
+            data = await requests.fetchData(target);
         }
+        uuid = data['id'];
+        username = data['name'];
         // cache uuid
         if(config['cache']) {
-            cache[target] = uuid;
+            cache[cacheKey] = {
+                'name': username,
+                'uuid': uuid
+            };
         }
     }
     // get hypixel status information
@@ -61,7 +70,10 @@ async function getStatus(config, target) {
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds
         status = await requests.fetchStatus(uuid, config['apikey']);
     }
-    return status;
+    return {
+        'session': status['session'],
+        'name': username
+    };
 }
 
 getStatus.mojangLock = false;
@@ -77,7 +89,7 @@ async function follow(config) {
             display.displayError(config['targets'][0], err);
         }
         if(status !== null) {
-            display.displayStatus(config['targets'][0], status, config);
+            display.displayStatus(status['name'], status, config);
         }
         await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5 seconds
     }
@@ -103,7 +115,7 @@ async function stalk(config) {
             display.displayError(targets[i], err);
         }
         if(status !== null) {
-            display.displayStatus(targets[i], status, config);
+            display.displayStatus(status['name'], status, config);
         }
     }
 }
