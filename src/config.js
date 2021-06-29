@@ -42,11 +42,11 @@ const parsed = yargs
         describe: 'Caches player UUIDs for less future API calls'
     })
     .boolean('cache')
-    // uncache player UUIDs
-    .option('uncache', {
-        describe: 'Uncaches the following list of names'
+    // edit UUID cache
+    .option('edit-cache', {
+        describe: 'Opens the UUID cache in your text editor'
     })
-    .array('uncache')
+    .boolean('edit-cache')
     // follow a single player
     .option('follow', {
         describe: 'Continuously query a player every 10 seconds'
@@ -69,7 +69,7 @@ const config = {
     'online-only': false,   // online only mode
     'dump': true,           // display JSON dumps
     'cache': false,         // cache data
-    'uncache': [],          // uncache players
+    'edit-cache': false,    // edit cache
     'follow': false,        // follow mode
     'targets': [],          // targets
     ...configJSON
@@ -80,6 +80,11 @@ async function editConfigFile() {
     await open(path.join(DIR, '..', 'config', 'config.json'));
 }
 
+async function editCacheFile() {
+    console.log('\nOpening the UUID cache file in your default editor...');
+    await open(path.join(DIR, 'data', 'cache.json'));
+}
+
 function setArgIfExists(arg, callback = () => {}, newArg = arg) {
     if(parsed[arg] !== undefined) {
         config[newArg] = parsed[arg];
@@ -88,7 +93,7 @@ function setArgIfExists(arg, callback = () => {}, newArg = arg) {
 }
 
 // simple arguments
-['online-only', 'dump', 'uncache', 'cache', 'config']
+['online-only', 'dump', 'edit-cache', 'cache', 'config']
     .forEach(arg => setArgIfExists(arg));
 
 setArgIfExists('key', () => {}, 'apikey');
@@ -106,9 +111,10 @@ setArgIfExists('follow', () => {
 });
 
 // default to stalk mode
-if(!config['stalk'] && !config['follow'] && !config['config']) {
+if(!config['stalk'] && !config['follow'] && !config['config'] && !config['edit-cache']) {
     config['stalk'] = true;
 }
 
 exports.config = config;
 exports.editConfigFile = editConfigFile;
+exports.editCacheFile = editCacheFile;

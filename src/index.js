@@ -3,6 +3,7 @@
 const {
     config,
     editConfigFile,
+    editCacheFile,
 } = require('./config.js');
 
 const requests = require('./requests.js');
@@ -67,7 +68,7 @@ getStatus.mojangLock = false;
 getStatus.hypixelLock = false;
 
 async function follow(config) {
-    console.log('\nStarted following player. Press CTRL-C to exit.\n');
+    console.log();
     while(true) {
         let status = null;
         try {
@@ -114,22 +115,19 @@ async function runMode(config) {
         await stalk(config);
     } else if(config['config']) {
         await editConfigFile();
+    } else if(config['edit-cache']) {
+        await editCacheFile();
     }
 }
 
 function run(config) {
-    if(config['uncache']) {
-        for(let name of config['uncache']) {
-            delete cache[name];
-        }
-    }
     if(config['apikey'] === '' && !config['config']) {
         console.log('An API key was not found. Please run this application with --config to supply your key.');
         return;
     }
     runMode(config).finally(() => {
         // write to cache with or without error
-        if (config['cache'] || config['uncache']) {
+        if (config['cache']) {
             fs.writeFileSync(path.join(DIR, 'data', 'cache.json'), JSON.stringify(cache, null, 4));
         }
     });
