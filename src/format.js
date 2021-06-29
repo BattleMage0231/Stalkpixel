@@ -11,8 +11,6 @@ function inColor(text, color) {
 const OFFLINE = inColor('Offline', RED);
 const ONLINE = inColor('Online', GREEN);
 
-const PAD = '  ';
-
 exports.RED = RED;
 exports.GREEN = GREEN;
 exports.YELLOW = YELLOW;
@@ -21,5 +19,3 @@ exports.inColor = inColor;
 
 exports.OFFLINE = OFFLINE;
 exports.ONLINE = ONLINE;
-
-exports.PAD = PAD;

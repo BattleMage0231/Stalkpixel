@@ -92,7 +92,7 @@ async function follow(config) {
         }
         // display status if it exists
         if(status !== null) {
-            display.displayStatus(config['targets'][0], status);
+            display.displayStatus(config['targets'][0], status, config);
         }
         await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5000ms
     }
@@ -103,10 +103,11 @@ async function stalk(config) {
     // targets
     let targets = config['targets'];
     let statuses = [];
-    // push promises into to array
-    // these promises will execute asynchronously, reducing needed time greatly
+    // push promises into to array without waiting for them
     for(target of targets) {
-        statuses.push(getStatus(config, target));
+        let promise = getStatus(config, target);
+        promise.catch(() => {}); // so that javascript doesn't complain about unhandled rejections
+        statuses.push(promise);
     }
     // display statuses
     console.log();
@@ -117,10 +118,10 @@ async function stalk(config) {
             status = await statuses[i];
         } catch(err) {
             // display error
-            display.displayError(config['targets'][0], err);
+            display.displayError(targets[i], err);
         }
         if(status !== null) {
-            display.displayStatus(targets[i], status);
+            display.displayStatus(targets[i], status, config);
         }
     }
 }
@@ -137,8 +138,6 @@ async function runMode(config) {
 
 // executes the program
 function run(config) {
-    requests.setConfig(config);
-    display.setConfig(config);
     if (config['uncache']) {
         for (let name of config['uncache']) {
             delete cache[name];

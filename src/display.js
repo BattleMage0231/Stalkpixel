@@ -51,12 +51,6 @@ function loadGameData() {
 
 loadGameData();
 
-let config;
-
-function setConfig(obj) {
-    config = obj;
-}
-
 // formats status of an online player
 function displayOnlineStatus(name, session) {
     let status = [];
@@ -100,10 +94,15 @@ function displayOnlineStatus(name, session) {
 }
 
 // displays status of one player
-function displayStatus(name, status) {
+function displayStatus(name, status, options={}) {
+    options = {
+        'online-only': false,
+        'dump': true,
+        ...options,
+    };
     session = status['session'];
     if (!session['online']) {
-        if (!config['online-only']) {
+        if (!options['online-only']) {
             console.log(`${name} is ${format.OFFLINE}\n`);
         }
         return;
@@ -111,11 +110,11 @@ function displayStatus(name, status) {
     console.log(`${name} is ${format.ONLINE}`);
     // display status
     for (let line of displayOnlineStatus(name, session)) {
-        console.log(`${format.PAD}${line}`);
+        console.log(`${line}`);
     }
     // JSON dump
-    if (config['dump']) {
-        console.log(`${format.PAD}JSON dump: ${JSON.stringify(session)}\n`);
+    if (options['dump']) {
+        console.log(`JSON dump: ${JSON.stringify(session)}\n`);
     }
 }
 
@@ -127,4 +126,3 @@ function displayError(name, error) {
 
 exports.displayStatus = displayStatus;
 exports.displayError = displayError;
-exports.setConfig = setConfig;
