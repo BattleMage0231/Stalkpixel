@@ -76,12 +76,12 @@ const config = {
 };
 
 async function editConfigFile() {
-    console.log('\nOpening the config file in your default editor...');
+    console.log('Opening the config file in your default editor...');
     await open(path.join(DIR, '..', 'config', 'config.json'));
 }
 
 async function editCacheFile() {
-    console.log('\nOpening the UUID cache file in your default editor...');
+    console.log('Opening the UUID cache file in your default editor...');
     await open(path.join(DIR, 'data', 'cache.json'));
 }
 

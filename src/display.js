@@ -1,4 +1,4 @@
-const format = require('./format.js');
+const chalk = require('chalk');
 
 const gameData = {};
 
@@ -50,23 +50,23 @@ function formatOnlineStatus(session) {
     }
     // special messages
     if(gameType === 'Limbo') {
-        status.push(`In ${gameType}`);
+        status.push('In ' + chalk.yellowBright(gameType));
     } else if(['Main Lobby', 'Tournament Hall', 'Replay Viewer'].includes(gameType)) {
-        status.push(`In a ${gameType}`);
+        status.push('In a ' + chalk.yellowBright(gameType));
     } else if(mode === 'Lobby') {
-        status.push(`In a ${gameType} Lobby`);
+        status.push('In a ' + chalk.yellowBright(gameType) + ' Lobby');
     } else {
-        status.push(`Playing ${gameType}`);
+        status.push('Playing ' + chalk.yellowBright(gameType));
         if(mode) {
             if(gameType === 'SkyBlock') {
-                status.push(`In ${mode}`);
+                status.push('In ' + chalk.yellowBright(mode));
             } else {
-                status.push(`In mode ${mode}`);
+                status.push('In mode ' + chalk.yellowBright(mode));
             }
         }
         const NO_MAP = ['Build Battle', 'Housing'];
         if(map && !NO_MAP.includes(gameType)) {
-            status.push(`On map ${map}`);
+            status.push('On map ' + chalk.yellowBright(map));
         }
     }
     return status;
@@ -81,11 +81,11 @@ function displayStatus(name, status, options = {}) {
     let session = status['session'];
     if(!session['online']) {
         if(!options['online-only']) {
-            console.log(`${name} is ${format.OFFLINE}\n`);
+            console.log(chalk.yellowBright(name) + ' is ' + chalk.redBright('Offline') + '\n');
         }
         return;
     }
-    console.log(`${name} is ${format.ONLINE}`);
+    console.log(chalk.yellowBright(name) + ' is ' + chalk.green('Online'));
     formatOnlineStatus(session).forEach((line) => console.log(line)); // write each line
     if(options['dump']) {
         console.log(`JSON dump: ${JSON.stringify(session)}\n`);
@@ -93,7 +93,7 @@ function displayStatus(name, status, options = {}) {
 }
 
 function displayError(name, error) {
-    console.log(format.inColor(`An exception occured when checking ${name}'s status`, format.RED));
+    console.log(chalk.red(`An exception occured when checking ${name}'s status`));
     console.log(`${error.toString()}\n`);
 }
 

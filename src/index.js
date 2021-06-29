@@ -1,10 +1,6 @@
 #!/usr/bin/env node
 
-const {
-    config,
-    editConfigFile,
-    editCacheFile,
-} = require('./config.js');
+const { config, editConfigFile, editCacheFile } = require('./config.js');
 
 const requests = require('./requests.js');
 const display = require('./display.js');
@@ -28,18 +24,10 @@ async function getStatus(config, target) {
         let data = await requests.fetchData(target);
         if(data == null && config['follow']) {
             // don't retry if follow mode
-            console.log(`Exceeded Mojang's API rate limit\n`);
             return null;
         }
         // while rate limit exceeded
         while(data == null) {
-            // regulate the amount of cooldown notifications sent (one every 10 seconds)
-            if(!this.mojangLock) {
-                this.mojangLock = true; // lock mojang cooldown
-                console.log(`Exceeded Mojang's API rate limit, trying again soon...\n`);
-                // mojangLock is a property of this function so bind it
-                setTimeout((() => this.mojangLock = false).bind(this), 10000);
-            }
             // wait 10 seconds
             await new Promise(resolve => setTimeout(resolve, 10000));
             data = await requests.fetchData(target);
@@ -57,16 +45,10 @@ async function getStatus(config, target) {
     // get hypixel status information
     status = await requests.fetchStatus(uuid, config['apikey']);
     if(uuid == null && config['follow']) {
-        console.log(`Exceeded Hypixel's API rate limit\n`);
         return null;
     }
     // rate limit exceeded
     while(status == null) {
-        if(!this.hypixelLock) {
-            this.hypixelLock = true; // lock cooldown message
-            console.log(`Exceeded Hypixel's API rate limit, trying again soon...\n`);
-            setTimeout((() => this.hypixelLock = false).bind(this), 10000);
-        }
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds
         status = await requests.fetchStatus(uuid, config['apikey']);
     }
@@ -75,9 +57,6 @@ async function getStatus(config, target) {
         'name': username
     };
 }
-
-getStatus.mojangLock = false;
-getStatus.hypixelLock = false;
 
 async function follow(config) {
     console.log();
@@ -133,7 +112,7 @@ async function runMode(config) {
 }
 
 function run(config) {
-    if(config['apikey'] === '' && !config['config']) {
+    if(config['apikey'] === '' && !config['config'] && !config['edit-cache']) {
         console.log('An API key was not found. Please run this application with --config to supply your key.');
         return;
     }
