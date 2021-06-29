@@ -4,6 +4,18 @@
         "name": "Limbo"
     },
     {
+        "key": "IDLE",
+        "name": "Idle"
+    },
+    {
+        "key": "QUEUE",
+        "name": "Queue"
+    },
+    {
+        "key": "SMP",
+        "name": "SMP"
+    },
+    {
         "key": "MAIN",
         "name": "Main Lobby",
         "matcher": {
@@ -184,6 +196,10 @@
                     {
                         "key": "ZOMBIES_DEAD_END",
                         "name": "Zombies - Dead End"
+                    },
+                    {
+                        "key": "ZOMBIES_ALIEN_ARCADIUM",
+                        "name": "Alien Arcadium"
                     }
                 ]
             },
