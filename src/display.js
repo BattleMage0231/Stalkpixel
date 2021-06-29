@@ -101,12 +101,6 @@ function displayOnlineStatus(name, session) {
 
 // displays status of one player
 function displayStatus(name, status) {
-    if (!status || !status['success']) {
-        if (!config['online-only']) {
-            console.log(format.inColor(`An exception occured when checking ${name}'s status\n`, format.RED));
-        }
-        return;
-    }
     session = status['session'];
     if (!session['online']) {
         if (!config['online-only']) {
@@ -125,5 +119,12 @@ function displayStatus(name, status) {
     }
 }
 
+// display an error
+function displayError(name, error) {
+    console.log(format.inColor(`An exception occured when checking ${name}'s status`, format.RED));
+    console.log(`${error.toString()}\n`);
+}
+
 exports.displayStatus = displayStatus;
+exports.displayError = displayError;
 exports.setConfig = setConfig;

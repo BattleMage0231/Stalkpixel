@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const {
-    getConfig,
+    config,
     editConfigFile,
 } = require('./config.js');
 
@@ -88,7 +88,7 @@ async function follow(config) {
             status = await getStatus(config, config['targets'][0]);
         } catch(err) {
             // display error
-            display.displayStatus(config['targets'][0], status);
+            display.displayError(config['targets'][0], err);
         }
         // display status if it exists
         if(status !== null) {
@@ -115,9 +115,13 @@ async function stalk(config) {
         try {
             // await the promise
             status = await statuses[i];
-        } catch(err) {}
-        // display promise and target
-        display.displayStatus(targets[i], status);
+        } catch(err) {
+            // display error
+            display.displayError(config['targets'][0], err);
+        }
+        if(status !== null) {
+            display.displayStatus(targets[i], status);
+        }
     }
 }
 
@@ -140,6 +144,10 @@ function run(config) {
             delete cache[name];
         }
     }
+    if(config['apikey'] === '' && !config['config']) {
+        console.log('An API key was not found. Please run this application with --config to supply your key.');
+        return;
+    }
     runMode(config).finally(() => {
         // write to cache with or without error
         if (config['cache'] || config['uncache']) {
@@ -148,4 +156,4 @@ function run(config) {
     });
 }
 
-run(getConfig());
+run(config);

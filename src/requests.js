@@ -5,7 +5,12 @@ const MOJANG_ENDPOINT = 'https://api.mojang.com/users/profiles/minecraft/';
 const HYPIXEL_ENDPOINT = 'https://api.hypixel.net/status?';
 
 // custom error types
-class APIError extends Error {}
+class APIError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "APIError";
+    }
+}
 
 let config;
 
@@ -34,20 +39,20 @@ async function fetchUUID(name) {
     let res = await fetch(MOJANG_ENDPOINT + name);
     // mojang returns an empty string if the username doesn't exist
     if(res == '') {
-        return new APIError(`The username ${name} doesn't exist in the Mojang API`);
+        throw new APIError(`The username ${name} doesn't exist in the Mojang API`);
     }
     res = JSON.parse(res);
     // error occured
     if(res.error) {
         // rate limit error
         if(res.error == 'TooManyRequestsException') {
-            if (config['follow']) {
+            if(config['follow']) {
                 console.log('Exceeded Mojang\'s API rate limit\n');
             }
             return null;
         }
         // other API errors
-        return new APIError(res.error);
+        throw new APIError(res.error);
     }
     // return uuid
     return res['id'];
@@ -59,11 +64,15 @@ async function fetchStatus(uuid, key) {
     let res = await fetch(`${HYPIXEL_ENDPOINT}key=${key}&uuid=${uuid}`);
     res = JSON.parse(res); // this line will throw an error for 502 bad gateway, which returns HTML
     // too many requests sent
-    if (res.throttle) {
-        if (config['follow']) {
+    if(res.throttle) {
+        if(config['follow']) {
             console.log('Exceeded Hypixel\'s API rate limit\n');
         }
         return null;
+    }
+    // invalid api key
+    if(res.success === false) {
+        throw new APIError(res.cause);
     }
     return res;
 }

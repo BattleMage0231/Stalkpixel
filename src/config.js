@@ -78,10 +78,6 @@ let config = {
     ...configJSON,
 };
 
-function getConfig() {
-    return config;
-}
-
 // open config.json in default editor asynchronously
 async function editConfigFile() {
     console.log('\nOpening the config file in your default editor...');
@@ -121,9 +117,9 @@ setArgIfExists('follow', () => {
 });
 
 // default to stalk mode
-if(!(config['stalk'] || config['follow'] || config['config'])) {
+if(!config['stalk'] && !config['follow'] && !config['config']) {
     config['stalk'] = true;
 }
 
-exports.getConfig = getConfig;
+exports.config = config;
 exports.editConfigFile = editConfigFile;
