@@ -35,7 +35,7 @@ Full credit for this template goes to othneildrew and contributors.
 
 ![product-screenshot](assets/Capture.PNG)
 
-Stalkpixel is a lightweight Node.js CLI application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Then, it uses data files from the Slothpixel API to parse this data. Stalkpixel can be used to stalk YouTubers, staff members, your friends, or any random player.
+Stalkpixel is a lightweight Node.js CLI application that can determine whether and where a player is on the Hypixel Network. It utilizes the Mojang and Hypixel public APIs to get this information. Then, it uses data files from the Slothpixel API to parse this data. Stalkpixel can be used to stalk YouTubers, staff members, your friends, or any other player as long as they haven't turned off Online Status in API Settings in game.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -65,7 +65,7 @@ node . --stalk BattleMage_ # to run
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Before you use the application, you must first run the following command and then set your API key in the JSON file. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key. Please be aware that your API key is stored in plaintext form in the configuration file. This means that anybody with access to your device with knowledge of this application may be able to find your API key.
+Before you use the application, you must first run the following command and then set your API key in the JSON file. You can follow [these instructions](https://github.com/HypixelDev/PublicAPI/blob/master/README.md#obtaining-an-api-key) to get your API key. Please be aware that your API key is stored in plaintext form in the configuration file. This means that anybody with access to your device may be able to find your API key.
 ```sh
 stalkpixel --config
 ```
@@ -97,7 +97,6 @@ stalkpixel --key API_KEY
 ```
 
 The --key flag is an alternative method of providing your API key. It overrides the key found in config.json.
-
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements

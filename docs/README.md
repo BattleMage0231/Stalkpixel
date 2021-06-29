@@ -115,16 +115,12 @@ However, this can get the wrong answer if the player changed their name. If you 
 
 The cache flag saves its data after execution is done, so quitting prematurely will cause it to lose all new data.
 
-## Clear Cached Data
+## Edit Cache File
 ```sh
-stalkpixel --uncache BattleMage_
+stalkpixel --edit-cache
 ```
 
-The --uncache flag tells the application to uncache the following array of usernames from the cache.
-
-The uncache flag saves its data after execution is done, so quitting prematurely will cause it to lose all new data.
-
-The --addtargets flag appends the following list of players to the default stalk list.
+The --edit-cache flag will open the cache file for editing. You must manually clear stale entries if caching Mojang data.
 
 ## Continuously Follow a Player
 ```sh
