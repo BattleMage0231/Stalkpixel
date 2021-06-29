@@ -12,17 +12,17 @@ const display = require('./display.js');
 const DIR = __dirname;
 const path = require('path');
 const fs = require('fs');
-let cache = require('./data/cache.json');
+const cache = require('./data/cache.json');
 
 // returns null or an error if unsuccessful
 async function getStatus(config, target) {
     let status = null;
     let uuid = cache[target]; 
-    if (uuid === undefined) {
+    if(uuid === undefined) {
         uuid = await requests.fetchUUID(target);
         if(uuid == null && config['follow']) {
             // don't retry if follow mode
-            console.log(`Exceeded Mojang\'s API rate limit\n`);
+            console.log(`Exceeded Mojang's API rate limit\n`);
             return null;
         }
         // rate limit exceeded
@@ -30,7 +30,7 @@ async function getStatus(config, target) {
             // regulate the amount of cooldown notifications sent (one every 10 seconds)
             if(!this.mojangLock) {
                 this.mojangLock = true; // lock mojang cooldown
-                console.log(`Exceeded Mojang\'s API rate limit, trying again soon...\n`);
+                console.log(`Exceeded Mojang's API rate limit, trying again soon...\n`);
                 // mojangLock is a property of this function so bind it
                 setTimeout((() => this.mojangLock = false).bind(this), 10000);
             }
@@ -40,21 +40,21 @@ async function getStatus(config, target) {
             uuid = await requests.fetchUUID(target);
         }
         // cache uuid
-        if (config['cache']) {
+        if(config['cache']) {
             cache[target] = uuid;
         }
     }
     // get hypixel status information
     status = await requests.fetchStatus(uuid, config['apikey']);
     if(uuid == null && config['follow']) {
-        console.log(`Exceeded Hypixel\'s API rate limit\n`);
+        console.log(`Exceeded Hypixel's API rate limit\n`);
         return null;
     }
     // rate limit exceeded
     while(status == null) {
         if(!this.hypixelLock) {
             this.hypixelLock = true; // lock cooldown message
-            console.log(`Exceeded Hypixel\'s API rate limit, trying again soon...\n`);
+            console.log(`Exceeded Hypixel's API rate limit, trying again soon...\n`);
             setTimeout((() => this.hypixelLock = false).bind(this), 10000);
         }
         await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds
@@ -78,16 +78,16 @@ async function follow(config) {
         if(status !== null) {
             display.displayStatus(config['targets'][0], status, config);
         }
-        await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5000ms
+        await new Promise(resolve => setTimeout(resolve, 5000)); // wait 5 seconds
     }
 }
 
 async function stalk(config) {
     let targets = config['targets'];
-    let statuses = [];
+    const statuses = [];
     // push promises into to array without waiting for them
-    for(target of targets) {
-        let promise = getStatus(config, target);
+    for(let target of targets) {
+        const promise = getStatus(config, target);
         promise.catch(() => {}); // so that javascript doesn't complain about unhandled rejections
         statuses.push(promise);
     }
@@ -118,8 +118,8 @@ async function runMode(config) {
 }
 
 function run(config) {
-    if (config['uncache']) {
-        for (let name of config['uncache']) {
+    if(config['uncache']) {
+        for(let name of config['uncache']) {
             delete cache[name];
         }
     }

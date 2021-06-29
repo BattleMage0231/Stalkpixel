@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 
 // open file in editor
@@ -12,45 +11,45 @@ const DIR = __dirname;
 const parsed = yargs
     // config
     .option('config', {
-        describe: 'Opens the configuration file in your text editor',
+        describe: 'Opens the configuration file in your text editor'
     })
     .boolean('config')
     // stalk command line list
     .option('stalk', {
-        describe: 'Stalks the following list of players',
+        describe: 'Stalks the following list of players'
     })
     .array('stalk')
     .alias('stalk', 's')
     // alternate way to add api key
     .option('key', {
-        describe: 'Externally provides an API key',
+        describe: 'Externally provides an API key'
     })
     .string('key')
     .alias('key', 'k')
     // print online only
     .option('online-only', {
-        describe: 'Only displays statuses of players that are online',
+        describe: 'Only displays statuses of players that are online'
     })
     .boolean('online-only')
     .alias('online-only', 'o')
     // do not print JSON dumps
     .option('no-dump', {
-        describe: 'Do not print JSON dumps for online players',
+        describe: 'Do not print JSON dumps for online players'
     })
     .boolean('no-dump')
     // cache player UUIDs
     .option('cache', {
-        describe: 'Caches player UUIDs for less future API calls',
+        describe: 'Caches player UUIDs for less future API calls'
     })
     .boolean('cache')
     // uncache player UUIDs
     .option('uncache', {
-        describe: 'Uncaches the following list of names',
+        describe: 'Uncaches the following list of names'
     })
     .array('uncache')
     // follow a single player
     .option('follow', {
-        describe: 'Continuously query a player every 10 seconds',
+        describe: 'Continuously query a player every 10 seconds'
     })
     .string('follow')
     .alias('follow', 'f')
@@ -60,10 +59,10 @@ const parsed = yargs
     .alias('help', 'h')
     .argv;
 
-let configJSON = require('./../config/config.json');
+const configJSON = require('./../config/config.json');
 
 // default values
-let config = {
+const config = {
     'config': false,        // edit config file
     'stalk': false,         // stalk mode
     'apikey': '',           // api key
@@ -73,7 +72,7 @@ let config = {
     'uncache': [],          // uncache players
     'follow': false,        // follow mode
     'targets': [],          // targets
-    ...configJSON,
+    ...configJSON
 };
 
 async function editConfigFile() {
@@ -84,14 +83,13 @@ async function editConfigFile() {
 function setArgIfExists(arg, callback = () => {}, newArg = arg) {
     if(parsed[arg] !== undefined) {
         config[newArg] = parsed[arg];
-        callback(); 
+        callback();
     }
 }
 
 // simple arguments
 ['online-only', 'dump', 'uncache', 'cache', 'config']
     .forEach(arg => setArgIfExists(arg));
-
 
 setArgIfExists('key', () => {}, 'apikey');
 

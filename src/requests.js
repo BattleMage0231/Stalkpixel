@@ -6,7 +6,7 @@ const HYPIXEL_ENDPOINT = 'https://api.hypixel.net/status?';
 class APIError extends Error {
     constructor(message) {
         super(message);
-        this.name = "APIError";
+        this.name = 'APIError';
     }
 }
 
